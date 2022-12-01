@@ -1,0 +1,11 @@
+<!--pages/Features/Moving_Average/Moving_Average.wxml-->
+<!-- <text>pages/Features/Moving_Average/Moving_Average.wxml</text> -->
+<view class="container">
+  <text class='txt'>设定滑动平均参数</text>
+
+  <slider class='slider' bindchange="slider4change" activeColor="#3d8ae5" min="1" max="60" step="1" show-value/>
+
+  <text>\n\n</text>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">下达</button>
+</view>

@@ -1,0 +1,7 @@
+<!--index.wxml-->
+<view class="container">
+  欢迎使用！
+  <text>\n请启动W-FCU适配器，\n并正确放置在仪表上。\n\n待……，\n请点击下方按钮。\n\n\n</text>
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">连接适配器</button>
+  <text class='tips'>\n\n{{tips}}</text>
+</view>

@@ -1,0 +1,11 @@
+<!--pages/Features/Measuring_Direction/Measuring_Direction.wxml-->
+<!-- <text>pages/Features/Measuring_Direction/Measuring_Direction.wxml</text> -->
+<view class="container">
+  <text class='txt'>正负累计流量交替显示开关</text>
+
+  <switch checked="{{switch1Checked}}" bindchange="switch1Change"/>
+
+  <text>\n\n</text>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">下达</button>
+</view>
