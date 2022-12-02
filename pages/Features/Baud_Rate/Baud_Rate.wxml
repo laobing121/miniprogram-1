@@ -1,0 +1,15 @@
+<!--pages/Features/Baud_Rate/Baud_Rate.wxml-->
+<!-- <text>pages/Features/Baud_Rate/Baud_Rate.wxml</text> -->
+<view class="container">
+  <text class='txt'>设置波特率</text>
+
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view class="picker">
+      {{array[index]}}
+    </view>
+  </picker>
+
+  <text>\n</text>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">下达</button>
+</view>

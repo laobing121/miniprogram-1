@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/page00/page00",
+    "pages/index/index",
+    "pages/wuf-c/wuf-c",
+    "pages/wuw-a/wuw-a",
+    "pages/wuw-c/wuw-c",
+    "pages/Features/Data/Data",
+    "pages/Features/Parameter/Parameter",
+    "pages/Features/Diameter/Diameter",
+    "pages/Features/Startup/Startup",
+    "pages/Features/Baud_Rate/Baud_Rate",
+    "pages/Features/Parity_Bit/Parity_Bit",
+    "pages/Features/Mailing_Address/Mailing_Address",
+    "pages/Features/Communication_Protocol/Communication_Protocol",
+    "pages/Features/Measuring_Direction/Measuring_Direction",
+    "pages/Features/Moving_Average/Moving_Average",
+    "pages/Features/Cheat/Cheat",
+    "pages/Features/Unit_Flow_velocity/Unit_Flow_velocity",
+    "pages/Features/Zero/Zero",
+    "pages/Features/Correction_Factor/Correction_Factor",
+    "pages/Features/Multistage/Multistage",
+    "pages/Features/Real-time/Real-time",
+    "pages/Features/Data-correction/Data-correction",
+    "pages/Features/Transducer_Type/Transducer_Type"
+  ],
+  "darkmode": true,
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#3d8ae5",
+    "navigationBarTitleText": "超声设参",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

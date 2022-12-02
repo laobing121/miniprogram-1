@@ -1,0 +1,9 @@
+<!--pages/wuw-a/wuw-a.wxml-->
+<!-- <text>pages/wuw-a/wuw-a.wxml</text> -->
+<view>
+  <text style="font-size:40rpx; display:flex; align-items:center; justify-content:center;">\n请选择操作项：\n</text>
+
+  <view class="btnGroup" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}">
+        <button style="width: 100%;" bindtap="btn1" id="{{item.name}}">{{item.value}}</button>
+  </view>
+</view>

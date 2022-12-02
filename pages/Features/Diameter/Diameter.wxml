@@ -1,0 +1,14 @@
+<!--pages/Features/Diameter/Diameter.wxml-->
+<!-- <text>pages/Features/Diameter/Diameter.wxml</text> -->
+<view class="container">
+  <text class='txt'>设定管道内径</text>
+
+  <input class="input" bindinput="bindInput"  type="digit" placeholder="请输入……">{{input}}</input>
+  
+  <text>\n单位：mm</text>
+  <text>有效范围：80 ~ 2000</text>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">下达</button>
+
+  <text class='tips'>\n\n{{tips}}</text>
+</view>

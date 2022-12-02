@@ -1,0 +1,14 @@
+/**index.wxss**/
+
+.container {
+  font-size:40rpx;
+}
+
+.btn1 {
+  background-color: #3d8ae5;
+  color: white;
+}
+
+.tips {
+  color: orange;
+}
