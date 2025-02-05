@@ -1,0 +1,18 @@
+/* pages/other/other.wxss */
+
+.container {
+  font-size:40rpx;
+}
+
+.container2 {
+  height: 300px;
+}
+
+.radio-group {
+  border-bottom: 1px solid #ddd;
+}
+.radio {
+  display: block;
+  border-top: 1px solid #ddd;
+  padding: 5px;
+}

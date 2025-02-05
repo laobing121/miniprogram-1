@@ -8,9 +8,10 @@ Page({
    */
   data: {
     items: [
-        { name: 'wuf-c', value: 'WUF-C2 / WUF-C3 / WUF-C5' },
-        { name: 'wuw-a', value: 'WUW-A / WUF-C6'},
-        { name: 'wuw-c', value: 'WUW-C' , checked: 'true' },
+        { name: 'wuf-c', value: 'KCL-C' },
+        { name: 'wuw-a', value: 'KCS-A'},
+        { name: 'wuw-c', value: 'KCS-C' , checked: 'true' },
+        { name: 'other', value: 'Other equipment'},
     ]
   },
 
