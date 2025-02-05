@@ -4,7 +4,7 @@
     <radio-group class="radio-group" bindchange="radioChange">
       <scroll-view class="container2" scroll-y>
         <radio color="#3d8ae5" class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}">
-            <text>{{item.name}}({{item.deviceId}})</text>
+            <text>{{item.name}}</text>
         </radio>
       </scroll-view>
     </radio-group>
