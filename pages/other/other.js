@@ -4,6 +4,10 @@ var button_command
         //1——连接
         //2——断开连接
 var deviceId
+var serviceId
+var characteristicsFE61
+var characteristicsFE62
+var characteristicsFE63
 
 Page({
 
@@ -197,6 +201,9 @@ Page({
             button_disabled: false,
           })
           button_command = 2
+          /*******************************/
+          /**********获取设备服务**********/
+          /*******************************/
           // 连接成功，获取服务
           wx.getBLEDeviceServices({
             deviceId, // 搜索到设备的 deviceId
@@ -204,6 +211,10 @@ Page({
               for (let i = 0; i < res.services.length; i++) {
                 if (res.services[i].isPrimary) {
                   // 可根据具体业务需要，选择一个主服务进行通信
+                  if(res.services[i].uuid.indexOf("FE60-") >=0)
+                  {
+                    serviceId = res.services[i].uuid
+                  }
                 }
               }
               console.log(res.services.length)
@@ -213,15 +224,38 @@ Page({
               })
             }
           })
-
-
-
-
-
-
-
-
-
+          
+          /*******************************/
+          /**********获取设备特征**********/
+          /*******************************/
+          wx.getBLEDeviceCharacteristics({
+            deviceId, // 搜索到设备的 deviceId
+            serviceId, // 上一步中找到的某个服务
+            success: (res) => {
+              console.log(res.characteristics)
+              that.setData({
+                tips: "获取设备特征成功\n",
+              })
+              for (let i = 0; i < res.characteristics.length; i++) {
+                let item = res.characteristics[i]
+                if(item.uuid.indexOf("FE61-") >=0) {
+                  characteristicsFE61 = item.uuid
+                }
+                if(item.uuid.indexOf("FE62-") >=0) {
+                  characteristicsFE62 = item.uuid
+                }
+                if(item.uuid.indexOf("FE63-") >=0) {
+                  characteristicsFE63 = item.uuid
+                }
+              }
+            },
+            fail: (res) => {
+              console.log(res)
+              that.setData({
+                tips: "获取设备特征失败\n" + res.errCode + "\n" + res.errMsg,
+              })
+            }
+          })
         },
         fail: (res) => {
           that.setData({
@@ -284,16 +318,9 @@ Page({
     /*******************************/
     /**********获取设备特征**********/
     /*******************************/
-    wx.getBLEDeviceCharacteristics({
-      deviceId, // 搜索到设备的 deviceId
-      serviceId: "FE60", // 上一步中找到的某个服务
-      success: (res) => {
-        console.log(res.characteristics)
-        that.setData({
-          tips: "获取设备特征成功\n",
-        })
-        /*for (let i = 0; i < res.characteristics.length; i++) {
-          let item = res.characteristics[i]
+
+        /*
+          
           if (item.properties.write) { // 该特征值可写
             // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
             // 实际使用时，应根据具体设备协议发送数据
@@ -324,13 +351,7 @@ Page({
             })
           }
         }*/
-      },
-      fail: (res) => {
-        console.log(res)
-        that.setData({
-          tips: "获取设备特征失败\n" + res.errCode + "\n" + res.errMsg,
-        })
-      }
-    })
+
+
   }
 })
