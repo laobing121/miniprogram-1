@@ -1,4 +1,10 @@
 // pages/other/other.js
+var button_command
+        //0——扫描
+        //1——连接
+        //2——断开连接
+var deviceId
+
 Page({
 
   /**
@@ -14,8 +20,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    button_command = 0
     this.setData({
+      button_disabled: false,
+      radio_disabled: false,
       tips: "请尽量接近产品，然后点击“扫描”",
+      buttonText: "扫描",
+      items: [],
       });
   },
 
@@ -72,106 +83,193 @@ Page({
     wx.vibrateShort();
     this.setData({
       backgroundcolor: "grey",
+      button_disabled: true
       });
       
     var that = this;
-    wx.openBluetoothAdapter({
-      success (res) {
-        console.log(res)
-        that.setData({
-          tips: "蓝牙适配器初始化成功\n" + res.errCode + "\n" + res.errMsg,
-          })
-          /*that.setData({
-            items = []
-          })*/
-          
-          
-          wx.startBluetoothDevicesDiscovery({
-            //services: ['FEE7'],
-            allowDuplicatesKey: false,
-            success (res) {
-              console.log(res)
-              that.setData({
-                tips: "扫描外围设备\n" + res.errCode + "\n" + res.errMsg,
-              })
-              var BLEdevices = []
-              //每当发现一个新的蓝牙设备，就会触发这个事件。
-              wx.onBluetoothDeviceFound((res) => {
-                
+    if(button_command == 0){
+      /*******************************/
+      /*********打开蓝牙适配器*********/
+      /*******************************/
+      wx.openBluetoothAdapter({
+        success (res) {
+          console.log(res)
+          that.setData({
+            tips: "蓝牙适配器初始化成功\n" + res.errCode + "\n" + res.errMsg,
+            })
 
+            
+            
 
-
-
-                res.devices.forEach((device) => {
-                  // 这里可以做一些过滤
-                  console.log('Device Found', device)
-                  var temp = BLEdevices.find(function(BLEdevice){
-                    return BLEdevice.deviceId === device.deviceId
-                  })
-                  if(temp == undefined){
-                    var newarray = {
-                      name: device.name,
-                      deviceId: device.deviceId,
-                      RSSI: device.RSSI,
-                    }
-                    BLEdevices.push(newarray)
-                  }
-                })
+            /*******************************/
+            /************扫描设备************/
+            /*******************************/
+            wx.startBluetoothDevicesDiscovery({
+              //services: ['FEE7'],
+              allowDuplicatesKey: false,
+              success (res) {
+                console.log(res)
                 that.setData({
-                  items: BLEdevices
+                  tips: "扫描外围设备\n" + res.errCode + "\n" + res.errMsg,
                 })
+                var BLEdevices = []
+                //每当发现一个新的蓝牙设备，就会触发这个事件。
+                /*******************************/
+                /************发现设备************/
+                /*******************************/
+                wx.onBluetoothDeviceFound((res) => {
+                  res.devices.forEach((device) => {
+                    // 这里可以做一些过滤
+                    console.log('Device Found', device)
+                    if(device.name != ""){//忽略无名称者
+                      var temp = BLEdevices.find(function(BLEdevice){
+                        return BLEdevice.deviceId === device.deviceId
+                      })
+                      if(temp == undefined){
+                        var newarray = {
+                          name: device.name,
+                          deviceId: device.deviceId,
+                          RSSI: device.RSSI,
+                        }
+                        BLEdevices.push(newarray)
+                      }
+                    }
+                  })
+                  that.setData({
+                    items: BLEdevices
+                  })
+                  console.log(that.data.items)
+                  // 找到要搜索的设备后，及时停止扫描
+                  //wx.stopBluetoothDevicesDiscovery()
+                })
+              },
+              fail (res) {
+                console.log(res)
+                that.setData({
+                  tips: "扫描外围设备失败\n" + res.errCode + "\n" + res.errMsg,
+                backgroundcolor: "#3d8ae5",
+                })
+              }
+            })
+        },
+        fail (res) {
+          console.log(res)
+          that.setData({
+            tips: "蓝牙适配器初始化失败\n请开启手机蓝牙并重试\n" + res.errCode + "\n" + res.errMsg,
+            backgroundcolor: "#3d8ae5",
+            })
+        }
+      })
 
 
 
-
-
-
-
-                console.log(that.data.items)
-                /*
-                console.log(that.data.BLEdevice.length)*/
-                // 找到要搜索的设备后，及时停止扫描
-                //wx.stopBluetoothDevicesDiscovery()
-                /*if(res.devices.length > 6){
-                  wx.stopBluetoothDevicesDiscovery()
-                  console.log(that.data.BLEdevice)
-                }*/
-                
-                //console.log(num)
-                
-              })
-            },
-            fail (res) {
-              console.log(res)
+      wx.onBluetoothAdapterStateChange(function (res) {
+        console.log('adapterState changed, now is', res)
+        //蓝牙适配器开启
+        if(res.available){
+          that.setData({
+            tips: "蓝牙适配器已开启",
+          })} else {
+            that.setData({
+              tips: "蓝牙适配器已关闭",
+            })
+          }
+      })
+    }
+    else if(button_command == 1){
+      /*******************************/
+      /************停止扫描************/
+      /*******************************/
+      wx.stopBluetoothDevicesDiscovery()
+      that.setData({
+        radio_disabled: true,
+      })
+      /*******************************/
+      /**************连接*************/
+      /*******************************/
+      wx.createBLEConnection({
+        deviceId, // 搜索到设备的 deviceId
+        success: (res) => {
+          that.setData({
+            tips: "连接成功\n" + res.errCode + "\n" + res.errMsg,
+            buttonText: "断开",
+            backgroundcolor: "#3d8ae5",
+            button_disabled: false,
+          })
+          button_command = 2
+          // 连接成功，获取服务
+          wx.getBLEDeviceServices({
+            deviceId, // 搜索到设备的 deviceId
+            success: (res) => {
+              for (let i = 0; i < res.services.length; i++) {
+                if (res.services[i].isPrimary) {
+                  // 可根据具体业务需要，选择一个主服务进行通信
+                }
+              }
+              console.log(res.services.length)
+              console.log(res.services)
               that.setData({
-                tips: "扫描外围设备失败\n" + res.errCode + "\n" + res.errMsg,
-              backgroundcolor: "#3d8ae5",
+                tips: "获取服务成功\n",
               })
             }
           })
-      },
-      fail (res) {
-        console.log(res)
-        that.setData({
-          tips: "蓝牙适配器初始化失败\n请开启手机蓝牙并重试\n" + res.errCode + "\n" + res.errMsg,
-          backgroundcolor: "#3d8ae5",
-          })
-      }
-    })
 
 
 
-    wx.onBluetoothAdapterStateChange(function (res) {
-      console.log('adapterState changed, now is', res)
-      //蓝牙适配器开启
-      if(res.available){
-        that.setData({
-          tips: "蓝牙适配器已开启",
-        })} else {
+
+
+
+
+
+
+        },
+        fail: (res) => {
           that.setData({
-            tips: "蓝牙适配器已关闭",
+            tips: "连接失败\n" + res.errCode + "\n" + res.errMsg,
+            backgroundcolor: "#3d8ae5",
+            button_disabled: false,
+            radio_disabled: false,
           })
         }
-    })
-  }
+      })
+    }
+    else {
+      /*******************************/
+      /************断开连接************/
+      /*******************************/
+      wx.closeBLEConnection({
+        deviceId,
+        success (res) {
+          console.log(res)
+          that.setData({
+            tips: "连接已断开\n" + res.errCode + "\n" + res.errMsg,
+          })
+        },
+        fail: (res) => {
+          that.setData({
+            tips: "断开失败\n" + res.errCode + "\n" + res.errMsg,
+          })
+        },
+        complete: (res) => {
+          that.setData({
+            buttonText: "连接",
+            backgroundcolor: "#3d8ae5",
+            button_disabled: false,
+            radio_disabled: false,
+          })
+          button_command = 1
+        },
+      })
+    }
+  },
+
+  radioChange: function (e) {
+    deviceId = e.detail.value;
+    this.setData({
+      buttonText: "连接",
+      backgroundcolor: "#3d8ae5",
+      button_disabled: false,
+      });
+    button_command = 1
+  },
 })
