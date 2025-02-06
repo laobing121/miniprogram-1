@@ -154,6 +154,7 @@ Page({
                 that.setData({
                   tips: "扫描外围设备失败\n" + res.errCode + "\n" + res.errMsg,
                 backgroundcolor: "#3d8ae5",
+                button_disabled: false,
                 })
               }
             })
@@ -163,6 +164,7 @@ Page({
           that.setData({
             tips: "蓝牙适配器初始化失败\n请开启手机蓝牙并重试\n" + res.errCode + "\n" + res.errMsg,
             backgroundcolor: "#3d8ae5",
+            button_disabled: false,
             })
         }
       })
@@ -201,6 +203,26 @@ Page({
             buttonText: "断开",
             backgroundcolor: "#3d8ae5",
             button_disabled: false,
+          })
+          /*******************************/
+          /**********监听连接状态**********/
+          /*******************************/
+          wx.onBLEConnectionStateChange(function(res) {
+            // 该方法回调中可以用于处理连接意外断开等异常情况
+            console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
+            if(res.connected == false){
+              that.setData({
+                tips: "连接中断\n" + res.errCode + "\n" + res.errMsg,
+                buttonText: "连接",
+                backgroundcolor: "#3d8ae5",
+                button_disabled: false,
+                radio_disabled: false,
+              })
+              button_command = 1
+              wx.navigateTo({
+                url: '/pages/' + 'other' + '/' + 'other',
+              })
+            }
           })
           button_command = 2
           /*******************************/
@@ -249,8 +271,8 @@ Page({
                     }
                   }
                   that.setData({
-                    button_disabled2: true,
-                    backgroundcolor2: "grey",
+                    button_disabled2: false,
+                    backgroundcolor2: "#3d8ae5",
                   })
                 },
                 fail: (res) => {
