@@ -23,7 +23,8 @@
     "pages/Features/Multistage/Multistage",
     "pages/Features/Real-time/Real-time",
     "pages/Features/Data-correction/Data-correction",
-    "pages/Features/Transducer_Type/Transducer_Type"
+    "pages/Features/Transducer_Type/Transducer_Type",
+    "pages/debug/debug"
   ],
   "darkmode": true,
   "window": {

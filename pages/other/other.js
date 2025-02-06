@@ -27,6 +27,8 @@ Page({
     button_command = 0
     this.setData({
       button_disabled: false,
+      button_disabled2: true,
+      backgroundcolor2: "grey",
       radio_disabled: false,
       tips: "请尽量接近产品，然后点击“扫描”",
       buttonText: "扫描",
@@ -222,40 +224,46 @@ Page({
               that.setData({
                 tips: "获取服务成功\n",
               })
+
+              /*******************************/
+              /**********获取设备特征**********/
+              /*******************************/
+              wx.getBLEDeviceCharacteristics({
+                deviceId, // 搜索到设备的 deviceId
+                serviceId, // 上一步中找到的某个服务
+                success: (res) => {
+                  console.log(res.characteristics)
+                  that.setData({
+                    tips: "获取设备特征成功\n",
+                  })
+                  for (let i = 0; i < res.characteristics.length; i++) {
+                    let item = res.characteristics[i]
+                    if(item.uuid.indexOf("FE61-") >=0) {
+                      characteristicsFE61 = item.uuid
+                    }
+                    if(item.uuid.indexOf("FE62-") >=0) {
+                      characteristicsFE62 = item.uuid
+                    }
+                    if(item.uuid.indexOf("FE63-") >=0) {
+                      characteristicsFE63 = item.uuid
+                    }
+                  }
+                  that.setData({
+                    button_disabled2: true,
+                    backgroundcolor2: "grey",
+                  })
+                },
+                fail: (res) => {
+                  console.log(res)
+                  that.setData({
+                    tips: "获取设备特征失败\n" + res.errCode + "\n" + res.errMsg,
+                  })
+                }
+              })
             }
           })
           
-          /*******************************/
-          /**********获取设备特征**********/
-          /*******************************/
-          wx.getBLEDeviceCharacteristics({
-            deviceId, // 搜索到设备的 deviceId
-            serviceId, // 上一步中找到的某个服务
-            success: (res) => {
-              console.log(res.characteristics)
-              that.setData({
-                tips: "获取设备特征成功\n",
-              })
-              for (let i = 0; i < res.characteristics.length; i++) {
-                let item = res.characteristics[i]
-                if(item.uuid.indexOf("FE61-") >=0) {
-                  characteristicsFE61 = item.uuid
-                }
-                if(item.uuid.indexOf("FE62-") >=0) {
-                  characteristicsFE62 = item.uuid
-                }
-                if(item.uuid.indexOf("FE63-") >=0) {
-                  characteristicsFE63 = item.uuid
-                }
-              }
-            },
-            fail: (res) => {
-              console.log(res)
-              that.setData({
-                tips: "获取设备特征失败\n" + res.errCode + "\n" + res.errMsg,
-              })
-            }
-          })
+          
         },
         fail: (res) => {
           that.setData({
@@ -314,44 +322,8 @@ Page({
       button_disabled2: true
       });
       
-    var that = this;
-    /*******************************/
-    /**********获取设备特征**********/
-    /*******************************/
-
-        /*
-          
-          if (item.properties.write) { // 该特征值可写
-            // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
-            // 实际使用时，应根据具体设备协议发送数据
-            let buffer = new ArrayBuffer(1)
-            let dataView = new DataView(buffer)
-            dataView.setUint8(0, 0)
-            wx.writeBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              value: buffer,
-            })
-          }
-          if (item.properties.read) { // 该特征值可读
-            wx.readBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-            })
-          }
-          if (item.properties.notify || item.properties.indicate) {
-            // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-            wx.notifyBLECharacteristicValueChange({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              state: true,
-            })
-          }
-        }*/
-
-
+      wx.navigateTo({
+        url: '/pages/' + 'debug' + '/' + 'debug',
+      })
   }
 })
