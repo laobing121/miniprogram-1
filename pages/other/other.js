@@ -272,4 +272,65 @@ Page({
       });
     button_command = 1
   },
+
+  btn2(e) {
+    wx.vibrateShort();
+    this.setData({
+      backgroundcolor2: "grey",
+      button_disabled2: true
+      });
+      
+    var that = this;
+    /*******************************/
+    /**********获取设备特征**********/
+    /*******************************/
+    wx.getBLEDeviceCharacteristics({
+      deviceId, // 搜索到设备的 deviceId
+      serviceId: "FE60", // 上一步中找到的某个服务
+      success: (res) => {
+        console.log(res.characteristics)
+        that.setData({
+          tips: "获取设备特征成功\n",
+        })
+        /*for (let i = 0; i < res.characteristics.length; i++) {
+          let item = res.characteristics[i]
+          if (item.properties.write) { // 该特征值可写
+            // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
+            // 实际使用时，应根据具体设备协议发送数据
+            let buffer = new ArrayBuffer(1)
+            let dataView = new DataView(buffer)
+            dataView.setUint8(0, 0)
+            wx.writeBLECharacteristicValue({
+              deviceId,
+              serviceId,
+              characteristicId: item.uuid,
+              value: buffer,
+            })
+          }
+          if (item.properties.read) { // 该特征值可读
+            wx.readBLECharacteristicValue({
+              deviceId,
+              serviceId,
+              characteristicId: item.uuid,
+            })
+          }
+          if (item.properties.notify || item.properties.indicate) {
+            // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
+            wx.notifyBLECharacteristicValueChange({
+              deviceId,
+              serviceId,
+              characteristicId: item.uuid,
+              state: true,
+            })
+          }
+        }*/
+      },
+      fail: (res) => {
+        console.log(res)
+        that.setData({
+          tips: "获取设备特征失败\n" + res.errCode + "\n" + res.errMsg,
+        })
+      }
+    })
+  }
 })
