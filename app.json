@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/Debugging_Items/RSSI/RSSI",
     "pages/page00/page00",
     "pages/index/index",
     "pages/wuf-c/wuf-c",

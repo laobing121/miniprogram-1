@@ -104,8 +104,25 @@ Page({
             tips: "蓝牙适配器初始化成功\n" + res.errCode + "\n" + res.errMsg,
             })
 
-            
-            
+            /*******************************/
+            /*********监听适配器状态*********/
+            /*******************************/
+            wx.onBluetoothAdapterStateChange(function (res) {
+              console.log('adapterState changed, now is', res)
+              //蓝牙适配器开启
+              if(res.available){
+                that.setData({
+                  tips: "蓝牙适配器已开启",
+                })} else {
+                  that.setData({
+                    tips: "蓝牙适配器已关闭",
+                    backgroundcolor: "#3d8ae5",
+                    button_disabled: false,
+                    backgroundcolor2: "grey",
+                    button_disabled2: true
+                  })
+                }
+            })
 
             /*******************************/
             /************扫描设备************/
@@ -168,21 +185,6 @@ Page({
             })
         }
       })
-
-
-
-      wx.onBluetoothAdapterStateChange(function (res) {
-        console.log('adapterState changed, now is', res)
-        //蓝牙适配器开启
-        if(res.available){
-          that.setData({
-            tips: "蓝牙适配器已开启",
-          })} else {
-            that.setData({
-              tips: "蓝牙适配器已关闭",
-            })
-          }
-      })
     }
     else if(button_command == 1){
       /*******************************/
@@ -217,11 +219,19 @@ Page({
                 backgroundcolor: "#3d8ae5",
                 button_disabled: false,
                 radio_disabled: false,
+                backgroundcolor2: "grey",
+                button_disabled2: true
               })
               button_command = 1
-              wx.navigateTo({
-                url: '/pages/' + 'other' + '/' + 'other',
-              })
+              //返回连接页
+              //console.log(getCurrentPages())
+              var pagestacks = getCurrentPages()
+              var step = pagestacks.length - 2
+              if(step > 0){
+                wx.navigateBack({
+                  delta: step
+                })
+              }
             }
           })
           button_command = 2
@@ -320,6 +330,8 @@ Page({
             backgroundcolor: "#3d8ae5",
             button_disabled: false,
             radio_disabled: false,
+            backgroundcolor2: "grey",
+            button_disabled2: true
           })
           button_command = 1
         },
@@ -338,10 +350,10 @@ Page({
   },
 
   btn2(e) {
-    wx.vibrateShort();
+    wx.vibrateShort(); 
     this.setData({
-      backgroundcolor2: "grey",
-      button_disabled2: true
+      //backgroundcolor2: "grey",
+      //button_disabled2: true
       });
       
       wx.navigateTo({

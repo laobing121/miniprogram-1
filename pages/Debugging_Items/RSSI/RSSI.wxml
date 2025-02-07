@@ -1,0 +1,9 @@
+<!--pages/Debugging_Items/RSSI/RSSI.wxml-->
+<view class="container">
+  <text class='txt'>读取蓝牙信号强度</text>
+
+  <text>{{value}} dBm</text>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1">{{buttonText}}</button>
+  <text>\n{{tips}}</text>
+</view>
