@@ -1,5 +1,7 @@
 // pages/Debugging_Items/RSSI/RSSI.js
 var button_command
+var Reconnect_count = 0//重连次数
+var Interval_number
 
 Page({
 
@@ -73,7 +75,6 @@ Page({
 
   btn1(e) {
     wx.vibrateShort(); 
-    var Interval_number
     var that = this
 
     if(button_command == 0){
@@ -84,9 +85,23 @@ Page({
       Interval_number = setInterval(function() {
         // 这里是需要无限循环执行的任务
         var deviceId = getApp().globalData.deviceId
+        if(getApp().globalData.Reconnect){
+          //预重连
+          wx.createBLEConnection({
+            deviceId,
+            success: (res) => {
+              console.log("重连成功！")
+              getApp().globalData.Reconnect = false
+            },
+          })
+        }
         wx.getBLEDeviceRSSI({deviceId,
           success: (res) => {
             console.log("获取蓝牙信号强度")
+            that.setData({
+              tips: "",
+            })
+            Reconnect_count = 0
             that.setData({
               value: res.RSSI,
             })
@@ -95,6 +110,33 @@ Page({
             that.setData({
               tips: "获取蓝牙信号强度失败\n" + res.errCode + "\n" + res.errMsg,
             })
+            if(getApp().globalData.Reconnect){
+              //重连
+              wx.createBLEConnection({
+                deviceId,
+                success: (res) => {
+                  console.log("重连成功！")
+                  getApp().globalData.Reconnect = false
+                },
+                fail: (res) => {
+                  Reconnect_count++
+                  console.log("重连失败-" + Reconnect_count)
+                  if(Reconnect_count >= 3){
+                    //假设没有向后翻页
+                    getApp().globalData.Reconnect = false
+                    //返回连接页
+                    //console.log(getCurrentPages())
+                    var pagestacks = getCurrentPages()
+                    var step = pagestacks.length - 2
+                    if(step > 0){
+                      wx.navigateBack({
+                        delta: step
+                      })
+                    }
+                  }
+                }
+              })
+            }
           },
         })
       }, 1000)

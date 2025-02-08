@@ -6,6 +6,7 @@ App({
     characteristicsFE61: "",
     characteristicsFE62: "",
     characteristicsFE63: "",
+    Reconnect: false,
   },
 
   isNumber(val) {

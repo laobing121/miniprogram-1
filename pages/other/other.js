@@ -215,24 +215,30 @@ Page({
             // 该方法回调中可以用于处理连接意外断开等异常情况
             console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
             if(res.connected == false){
-              that.setData({
-                tips: "连接中断\n" + res.errCode + "\n" + res.errMsg,
-                buttonText: "连接",
-                backgroundcolor: "#3d8ae5",
-                button_disabled: false,
-                radio_disabled: false,
-                backgroundcolor2: "grey",
-                button_disabled2: true
-              })
-              button_command = 1
-              //返回连接页
-              //console.log(getCurrentPages())
-              var pagestacks = getCurrentPages()
-              var step = pagestacks.length - 2
-              if(step > 0){
-                wx.navigateBack({
-                  delta: step
+              var CurrentPage = getCurrentPages()
+              if(CurrentPage.length == 2){
+                that.setData({
+                  tips: "连接中断\n" + res.errCode + "\n" + res.errMsg,
+                  buttonText: "连接",
+                  backgroundcolor: "#3d8ae5",
+                  button_disabled: false,
+                  radio_disabled: false,
+                  backgroundcolor2: "grey",
+                  button_disabled2: true
                 })
+                button_command = 1
+                //返回连接页
+                //console.log(getCurrentPages())
+                var pagestacks = getCurrentPages()
+                var step = pagestacks.length - 2
+                if(step > 0){
+                  wx.navigateBack({
+                    delta: step
+                  })
+                }
+              }
+              else{
+                getApp().globalData.Reconnect = true
               }
             }
           })

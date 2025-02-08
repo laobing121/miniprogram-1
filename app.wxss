@@ -18,6 +18,13 @@
   top: 50rpx;
 }
 
+.txt2{
+  font-size:50rpx;
+  font-weight: 550;
+  align-items: center;
+  margin-bottom: 35rpx;
+}
+
 .input{
   width: 500rpx;
   height: 100rpx;
