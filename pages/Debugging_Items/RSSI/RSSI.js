@@ -1,47 +1,3 @@
-    /*******************************/
-    /**********获取设备特征**********/
-    /*******************************/
-
-        /*
-          
-          if (item.properties.write) { // 该特征值可写
-            // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
-            // 实际使用时，应根据具体设备协议发送数据
-            let buffer = new ArrayBuffer(1)
-            let dataView = new DataView(buffer)
-            dataView.setUint8(0, 0)
-            wx.writeBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              value: buffer,
-            })
-          }
-          if (item.properties.read) { // 该特征值可读
-            wx.readBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-            })
-          }
-          if (item.properties.notify || item.properties.indicate) {
-            // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-            wx.notifyBLECharacteristicValueChange({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              state: true,
-            })
-          }
-        }*/
-
-
-
-
-
-
-
-
 // pages/Debugging_Items/RSSI/RSSI.js
 var button_command
 
@@ -118,6 +74,7 @@ Page({
   btn1(e) {
     wx.vibrateShort(); 
     var Interval_number
+    var that = this
 
     if(button_command == 0){
       button_command = 1
@@ -126,6 +83,7 @@ Page({
       });
       Interval_number = setInterval(function() {
         // 这里是需要无限循环执行的任务
+        var deviceId = getApp().globalData.deviceId
         wx.getBLEDeviceRSSI({deviceId,
           success: (res) => {
             console.log("获取蓝牙信号强度")

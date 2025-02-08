@@ -1,11 +1,13 @@
 // app.js
 App({
   globalData: {
-    Channel_length: 0,
-    Installation_distance: 0,
-    Line_position: 0,
+    deviceId: "",
+    serviceId: "",
+    characteristicsFE61: "",
+    characteristicsFE62: "",
+    characteristicsFE63: "",
   },
-  
+
   isNumber(val) {
 
     var regPos = /^\d+(\.\d+)?$/; //非负浮点数

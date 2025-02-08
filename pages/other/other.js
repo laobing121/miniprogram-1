@@ -194,9 +194,11 @@ Page({
       that.setData({
         radio_disabled: true,
       })
+      
       /*******************************/
       /**************连接*************/
       /*******************************/
+      deviceId = getApp().globalData.deviceId
       wx.createBLEConnection({
         deviceId, // 搜索到设备的 deviceId
         success: (res) => {
@@ -239,6 +241,7 @@ Page({
           /**********获取设备服务**********/
           /*******************************/
           // 连接成功，获取服务
+          deviceId = getApp().globalData.deviceId
           wx.getBLEDeviceServices({
             deviceId, // 搜索到设备的 deviceId
             success: (res) => {
@@ -247,7 +250,7 @@ Page({
                   // 可根据具体业务需要，选择一个主服务进行通信
                   if(res.services[i].uuid.indexOf("FE60-") >=0)
                   {
-                    serviceId = res.services[i].uuid
+                    getApp().globalData.serviceId = res.services[i].uuid
                   }
                 }
               }
@@ -260,6 +263,8 @@ Page({
               /*******************************/
               /**********获取设备特征**********/
               /*******************************/
+              deviceId = getApp().globalData.deviceId
+              serviceId = getApp().globalData.serviceId
               wx.getBLEDeviceCharacteristics({
                 deviceId, // 搜索到设备的 deviceId
                 serviceId, // 上一步中找到的某个服务
@@ -271,13 +276,13 @@ Page({
                   for (let i = 0; i < res.characteristics.length; i++) {
                     let item = res.characteristics[i]
                     if(item.uuid.indexOf("FE61-") >=0) {
-                      characteristicsFE61 = item.uuid
+                      getApp().globalData.characteristicsFE61 = item.uuid
                     }
                     if(item.uuid.indexOf("FE62-") >=0) {
-                      characteristicsFE62 = item.uuid
+                      getApp().globalData.characteristicsFE62 = item.uuid
                     }
                     if(item.uuid.indexOf("FE63-") >=0) {
-                      characteristicsFE63 = item.uuid
+                      getApp().globalData.characteristicsFE63 = item.uuid
                     }
                   }
                   that.setData({
@@ -311,6 +316,7 @@ Page({
       /*******************************/
       /************断开连接************/
       /*******************************/
+      deviceId = getApp().globalData.deviceId
       wx.closeBLEConnection({
         deviceId,
         success (res) {
@@ -340,7 +346,7 @@ Page({
   },
 
   radioChange: function (e) {
-    deviceId = e.detail.value;
+    getApp().globalData.deviceId = e.detail.value;
     this.setData({
       buttonText: "连接",
       backgroundcolor: "#3d8ae5",

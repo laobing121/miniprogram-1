@@ -7,6 +7,7 @@ Page({
   data: {
     items: [
       { name: 'RSSI', value: '001 蓝牙信号强度' },
+      { name: 'Device_Name', value: '002 修改设备名称' },
     ]
   },
 
