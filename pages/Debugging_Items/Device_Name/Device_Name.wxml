@@ -1,2 +1,15 @@
 <!--pages/Debugging_Items/Device_Name/Device_Name.wxml-->
-<text>pages/Debugging_Items/Device_Name/Device_Name.wxml</text>
+<view class="container">
+  <text class='txt'>设定蓝牙设备名称</text>
+
+  <view class='abc'>
+  <input class="input" bindinput="bindInput"  type="digit" placeholder="请输入产品ID…" value="{{input_value}}">{{input}}</input>
+  <button class="tapbtn1" style="width:60rpx;margin-left: 30rpx;" bindtap="skyOnclick" disabled="{{Display_mode}}">
+      <image class="tapimg1" src='/icon.png'></image>
+    </button>
+  </view>
+
+  <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1" disabled="{{button_disabled}}">{{buttonText}}</button>
+
+  <text class='tips'>\n\n{{tips}}</text>
+</view>

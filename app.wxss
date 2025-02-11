@@ -59,3 +59,31 @@
 .tips {
     color: orange;
   }
+
+  .tapbtn1 {
+    margin-top: 5%;
+    background-color: #3d8ae5;
+    color: white;
+    margin-bottom: 5%;
+    padding: 0;
+  }
+  
+  .tapimg1{  
+    width: 60rpx;
+    height: 60rpx;
+  }
+
+  .abc{
+    /**border-radius: 10rpx;
+    border-color: #3d8ae5;
+    border-width: 5rpx;
+    border-style: solid;**/
+    /**margin-top: 5rpx;**/
+    padding-top: 50rpx;
+    padding-left: 50rpx;
+  
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: center;
+  }

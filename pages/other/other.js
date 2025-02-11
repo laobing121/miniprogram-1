@@ -8,6 +8,7 @@ var serviceId
 var characteristicsFE61
 var characteristicsFE62
 var characteristicsFE63
+var value;
 
 Page({
 
@@ -33,6 +34,7 @@ Page({
       tips: "请尽量接近产品，然后点击“扫描”",
       buttonText: "扫描",
       items: [],
+      input: "",
       });
   },
 
@@ -83,6 +85,10 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+
+  bindInput(e) {
+    value = e.detail.value;
   },
 
   btn1(e) {
@@ -145,7 +151,7 @@ Page({
                     // 这里可以做一些过滤
                     console.log('Device Found', device)
                     if(device.name != ""){//忽略无名称者
-                      if((device.name.indexOf("BLE Device") >=0) || (device.name.indexOf("XY BLE ") >=0) || (device.name.indexOf("KC BLE ") >=0)){
+                      if((value === "" && ((device.name.indexOf("BLE Device") >=0) || (device.name.indexOf("XY BLE ") >=0) || (device.name.indexOf("KC BLE ") >=0))) || (device.name.indexOf("KC BLE " + value) >=0) || (device.name.indexOf("XY BLE " + value) >=0)){
                         var temp = BLEdevices.find(function(BLEdevice){
                           return BLEdevice.deviceId === device.deviceId
                         })

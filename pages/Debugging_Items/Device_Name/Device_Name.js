@@ -43,6 +43,9 @@
 
 
 // pages/Debugging_Items/Device_Name/Device_Name.js
+var button_command
+var value
+
 Page({
 
   /**
@@ -56,7 +59,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    button_command = 0
+    this.setData({
+      button_disabled: false,
+      tips: "",
+      buttonText: "下达",
+      input: "",
+      });
   },
 
   /**
@@ -106,5 +115,53 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+
+  bindInput(e) {
+    value = e.detail.value;
+    this.setData({
+      tips: "",
+    })
+  },
+
+  //二维码扫描
+  skyOnclick(event) {
+    var that = this;
+    wx.vibrateShort();
+    that.setData({
+      input_value: "",
+      tips: "",
+    })
+
+    wx.scanCode({
+      success (res) {
+        console.log(res)
+        var temp = res.result;
+        if(String(temp).length <= 15){
+          if(!isNaN(parseFloat(temp)) && isFinite(temp)) {
+            value = temp
+            that.setData({
+              input_value: value,
+            });
+          }
+          else{
+            that.setData({
+              tips: "输入有误.",
+            })
+          }
+        }
+        else {
+          that.setData({
+            tips: "输入有误.",
+          })
+        }
+      }
+    })
+  },
+
+  btn1() {
+    this.setData({
+      tips: "",
+    })
+  },
 })
