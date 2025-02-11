@@ -145,16 +145,18 @@ Page({
                     // 这里可以做一些过滤
                     console.log('Device Found', device)
                     if(device.name != ""){//忽略无名称者
-                      var temp = BLEdevices.find(function(BLEdevice){
-                        return BLEdevice.deviceId === device.deviceId
-                      })
-                      if(temp == undefined){
-                        var newarray = {
-                          name: device.name,
-                          deviceId: device.deviceId,
-                          RSSI: device.RSSI,
+                      if((device.name.indexOf("BLE Device") >=0) || (device.name.indexOf("XY BLE ") >=0) || (device.name.indexOf("KC BLE ") >=0)){
+                        var temp = BLEdevices.find(function(BLEdevice){
+                          return BLEdevice.deviceId === device.deviceId
+                        })
+                        if(temp == undefined){
+                          var newarray = {
+                            name: device.name,
+                            deviceId: device.deviceId,
+                            RSSI: device.RSSI,
+                          }
+                          BLEdevices.push(newarray)
                         }
-                        BLEdevices.push(newarray)
                       }
                     }
                   })
