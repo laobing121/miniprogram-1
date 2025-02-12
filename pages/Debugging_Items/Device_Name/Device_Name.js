@@ -1,21 +1,11 @@
-    /*******************************/
-    /**********获取设备特征**********/
-    /*******************************/
+    
 
         /*
           
           if (item.properties.write) { // 该特征值可写
             // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
             // 实际使用时，应根据具体设备协议发送数据
-            let buffer = new ArrayBuffer(1)
-            let dataView = new DataView(buffer)
-            dataView.setUint8(0, 0)
-            wx.writeBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              value: buffer,
-            })
+            
           }
           if (item.properties.read) { // 该特征值可读
             wx.readBLECharacteristicValue({
@@ -160,8 +150,51 @@ Page({
   },
 
   btn1() {
+    wx.vibrateShort();
     this.setData({
+      backgroundcolor: "grey",
+      button_disabled: true,
       tips: "",
     })
+
+    var that = this;
+    if(String(value).length <= 15){
+      if(!isNaN(parseFloat(value)) && isFinite(value)) {
+        /*******************************/
+        /************蓝牙写入************/
+        /*******************************/
+        let buffer = new ArrayBuffer(4 + 7 + String(value).length)
+        let dataView = new DataView(buffer)
+        dataView.setUint8(0, 0x01)
+        dataView.setUint8(1, 0xFC)
+        dataView.setUint8(2, 0x07)
+        var temp = 7 + String(value).length
+        dataView.setUint8(3, temp)
+        for(let i = 0; i < temp; i++){
+          dataView.setUint8(4 + i, String(value).substr(i, 1))
+        }
+        console.log(buffer)
+        /*wx.writeBLECharacteristicValue({
+          deviceId,
+          serviceId,
+          characteristicId: item.uuid,
+          value: buffer,
+        })*/
+      }
+      else {
+        that.setData({
+          tips: "输入有误.",
+          backgroundcolor: "#3d8ae5",
+          button_disabled: false,
+        })
+      }
+    }
+    else {
+      that.setData({
+        tips: "输入有误.",
+        backgroundcolor: "#3d8ae5",
+        button_disabled: false,
+      })
+    }
   },
 })
