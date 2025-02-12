@@ -1,37 +1,3 @@
-    
-
-        /*
-          
-          if (item.properties.write) { // 该特征值可写
-            // 本示例是向蓝牙设备发送一个 0x00 的 16 进制数据
-            // 实际使用时，应根据具体设备协议发送数据
-            
-          }
-          if (item.properties.read) { // 该特征值可读
-            wx.readBLECharacteristicValue({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-            })
-          }
-          if (item.properties.notify || item.properties.indicate) {
-            // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-            wx.notifyBLECharacteristicValueChange({
-              deviceId,
-              serviceId,
-              characteristicId: item.uuid,
-              state: true,
-            })
-          }
-        }*/
-
-
-
-
-
-
-
-
 // pages/Debugging_Items/Device_Name/Device_Name.js
 var button_command
 var value
@@ -160,26 +126,78 @@ Page({
     var that = this;
     if(String(value).length <= 15){
       if(!isNaN(parseFloat(value)) && isFinite(value)) {
+        var deviceId = getApp().globalData.deviceId
+        var serviceId = getApp().globalData.serviceId
+        var characteristicId = getApp().globalData.characteristicsFE63
         /*******************************/
-        /************蓝牙写入************/
+        /**********允许蓝牙反馈**********/
         /*******************************/
-        let buffer = new ArrayBuffer(4 + 7 + String(value).length)
-        let dataView = new DataView(buffer)
-        dataView.setUint8(0, 0x01)
-        dataView.setUint8(1, 0xFC)
-        dataView.setUint8(2, 0x07)
-        var temp = 7 + String(value).length
-        dataView.setUint8(3, temp)
-        for(let i = 0; i < temp; i++){
-          dataView.setUint8(4 + i, String(value).substr(i, 1))
-        }
-        console.log(buffer)
-        /*wx.writeBLECharacteristicValue({
+        // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
+        wx.notifyBLECharacteristicValueChange({
           deviceId,
           serviceId,
-          characteristicId: item.uuid,
-          value: buffer,
-        })*/
+          characteristicId,
+          state: true,
+        })
+        //稍待
+        var Timeout_number = setTimeout(function() {
+          // 这里是500毫秒后需要执行的任务
+          /*******************************/
+          /************蓝牙写入************/
+          /*******************************/
+          let arrayBuffer1 = new ArrayBuffer(4)
+          let dataView = new DataView(arrayBuffer1)
+          dataView.setUint8(0, 0x01)
+          dataView.setUint8(1, 0xFC)
+          dataView.setUint8(2, 0x07)
+          var temp = 7 + String(value).length
+          dataView.setUint8(3, temp)
+
+          var intactValue = "KC BLE " + value
+          /*for(let i = 0; i < temp; i++){
+            dataView.setUint8(4 + i, String(intactValue).substr(i, 1))
+          }
+          console.log(arrayBuffer1)*/
+
+          //字符串编码
+          /*const encoder = new TextEncoder();
+          const arrayBuffer2 = encoder.encode(intactValue).buffer;
+          console.log(arrayBuffer2);*/
+          const arrayBuffer2 = unescape(encodeURIComponent(intactValue)).split("").map(val => val.charCodeAt())
+          console.log(arrayBuffer2);
+
+          //字符串解码
+          /*const decoder = new TextDecoder();
+          const str = decoder.decode(new Uint8Array(arrayBuffer2));
+          console.log(str);*/
+          const str = decodeURIComponent(escape(String.fromCharCode(...arrayBuffer2)))
+          console.log(str)
+          
+          //ArrayBuffer的合并
+          const buffer = new ArrayBuffer(4 + 7 + String(value).length)
+          const uint8Array = new Uint8Array(buffer)
+          uint8Array.set(new Uint8Array(arrayBuffer1), 0)
+          uint8Array.set(new Uint8Array(arrayBuffer2), 4)
+          console.log(buffer)
+          
+          wx.writeBLECharacteristicValue({
+            deviceId,
+            serviceId,
+            characteristicId,
+            value: buffer,
+            success (res) {
+
+            },
+            fail: (res) => {
+              that.setData({
+                tips: "蓝牙设备名称写入失败\n" + res.errCode + "\n" + res.errMsg,
+                backgroundcolor: "#3d8ae5",
+                button_disabled: false,
+              })
+            }
+          })
+        }, 500);
+        //clearTimeout(Timeout_number);
       }
       else {
         that.setData({
