@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/Debugging_Items/Device_Name/Device_Name",
     "pages/page00/page00",
     "pages/index/index",
     "pages/wuf-c/wuf-c",
@@ -26,7 +25,8 @@
     "pages/Features/Data-correction/Data-correction",
     "pages/Features/Transducer_Type/Transducer_Type",
     "pages/debug/debug",
-    "pages/Debugging_Items/RSSI/RSSI"
+    "pages/Debugging_Items/RSSI/RSSI",
+    "pages/Debugging_Items/Device_Name/Device_Name"
   ],
   "darkmode": true,
   "window": {

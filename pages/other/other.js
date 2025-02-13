@@ -26,6 +26,7 @@ Page({
    */
   onLoad(options) {
     button_command = 0
+    value = ""
     this.setData({
       button_disabled: false,
       button_disabled2: true,

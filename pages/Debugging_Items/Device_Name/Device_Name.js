@@ -1,6 +1,7 @@
 // pages/Debugging_Items/Device_Name/Device_Name.js
 var button_command
 var value
+var Reconnect_count = 0//重连次数
 
 Page({
 
@@ -129,6 +130,20 @@ Page({
         var deviceId = getApp().globalData.deviceId
         var serviceId = getApp().globalData.serviceId
         var characteristicId = getApp().globalData.characteristicsFE63
+
+        /*******************************/
+        /*************预重连************/
+        /*******************************/
+        if(getApp().globalData.Reconnect){
+          wx.createBLEConnection({
+            deviceId,
+            success: (res) => {
+              console.log("重连成功！")
+              getApp().globalData.Reconnect = false
+            },
+          })
+        }
+
         /*******************************/
         /**********允许蓝牙反馈**********/
         /*******************************/
@@ -139,12 +154,28 @@ Page({
           characteristicId,
           state: true,
         })
+        /*******************************/
+        /**********监听蓝牙反馈**********/
+        /*******************************/
+        // 操作之前先监听，保证第一时间获取数据
+        wx.onBLECharacteristicValueChange((result) => {
+          console.log(result)
+
+
+          // 使用完成后在合适的时机断开连接和关闭蓝牙适配器
+          /*wx.closeBLEConnection({
+            deviceId,
+          })
+          wx.closeBluetoothAdapter({})*/
+        })
         //稍待
         var Timeout_number = setTimeout(function() {
           // 这里是500毫秒后需要执行的任务
           /*******************************/
           /************蓝牙写入************/
           /*******************************/
+          //建议每次写入不超过 20 字节。
+          //若单次写入数据过长，iOS 上存在系统不会有任何回调的情况（包括错误回调）。
           let arrayBuffer1 = new ArrayBuffer(4)
           let dataView = new DataView(arrayBuffer1)
           dataView.setUint8(0, 0x01)
@@ -186,14 +217,60 @@ Page({
             characteristicId,
             value: buffer,
             success (res) {
-
+              Reconnect_count = 0
             },
             fail: (res) => {
-              that.setData({
-                tips: "蓝牙设备名称写入失败\n" + res.errCode + "\n" + res.errMsg,
-                backgroundcolor: "#3d8ae5",
-                button_disabled: false,
-              })
+              if(getApp().globalData.Reconnect){
+                //重连
+                wx.createBLEConnection({
+                  deviceId,
+                  success: (res) => {
+                    console.log("重连成功！")
+                    getApp().globalData.Reconnect = false
+                    //指令重发
+                    wx.writeBLECharacteristicValue({
+                      deviceId,
+                      serviceId,
+                      characteristicId,
+                      value: buffer,
+                      success (res) {
+                        Reconnect_count = 0
+                      },
+                      fail: (res) => {
+                        that.setData({
+                          tips: "蓝牙设备名称写入失败\n" + res.errCode + "\n" + res.errMsg,
+                          backgroundcolor: "#3d8ae5",
+                          button_disabled: false,
+                        })
+                      },
+                    })
+                  },
+                  fail: (res) => {
+                    that.setData({
+                      tips: "蓝牙设备名称写入失败\n" + res.errCode + "\n" + res.errMsg,
+                      backgroundcolor: "#3d8ae5",
+                      button_disabled: false,
+                    })
+
+
+                    Reconnect_count++
+                    console.log("重连失败-" + Reconnect_count)
+                    if(Reconnect_count >= 3){
+                      //假设没有向后翻页
+                      getApp().globalData.Reconnect = false
+                      //返回连接页
+                      //console.log(getCurrentPages())
+                      var pagestacks = getCurrentPages()
+                      var step = pagestacks.length - 2
+                      if(step > 0){
+                        wx.navigateBack({
+                          delta: step
+                        })
+                      }
+                    }
+                  }
+                })
+              }
             }
           })
         }, 500);
