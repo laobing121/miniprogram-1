@@ -16,6 +16,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    //获取当前页面
+    getApp().TogetCurrentPage()
+    //console.log(getApp().globalData.currentPage)
+
     button_command = 0
     this.setData({
       button_disabled: false,
@@ -127,47 +131,34 @@ Page({
     var that = this;
     if(String(value).length <= 15){
       if(!isNaN(parseFloat(value)) && isFinite(value)) {
-        var deviceId = getApp().globalData.deviceId
-        var serviceId = getApp().globalData.serviceId
-        var characteristicId = getApp().globalData.characteristicsFE63
+        
 
-        /*******************************/
-        /*************预重连************/
-        /*******************************/
-        if(getApp().globalData.Reconnect){
-          wx.createBLEConnection({
-            deviceId,
-            success: (res) => {
-              console.log("重连成功！")
-              getApp().globalData.Reconnect = false
-            },
-          })
-        }
+        
 
         /*******************************/
         /**********允许蓝牙反馈**********/
         /*******************************/
         // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-        wx.notifyBLECharacteristicValueChange({
+        /*wx.notifyBLECharacteristicValueChange({
           deviceId,
           serviceId,
           characteristicId,
           state: true,
-        })
+        })*/
         /*******************************/
         /**********监听蓝牙反馈**********/
         /*******************************/
         // 操作之前先监听，保证第一时间获取数据
-        wx.onBLECharacteristicValueChange((result) => {
+        /*wx.onBLECharacteristicValueChange((result) => {
           console.log(result)
 
 
           // 使用完成后在合适的时机断开连接和关闭蓝牙适配器
-          /*wx.closeBLEConnection({
+          wx.closeBLEConnection({
             deviceId,
           })
-          wx.closeBluetoothAdapter({})*/
-        })
+          wx.closeBluetoothAdapter({})
+        })*/
         //稍待
         var Timeout_number = setTimeout(function() {
           // 这里是500毫秒后需要执行的任务
@@ -211,7 +202,11 @@ Page({
           uint8Array.set(new Uint8Array(arrayBuffer2), 4)
           console.log(buffer)
           
-          wx.writeBLECharacteristicValue({
+
+
+
+          getApp().Command_Send(3, buffer)
+          /*wx.writeBLECharacteristicValue({
             deviceId,
             serviceId,
             characteristicId,
@@ -228,22 +223,14 @@ Page({
                     console.log("重连成功！")
                     getApp().globalData.Reconnect = false
                     //指令重发
-                    wx.writeBLECharacteristicValue({
-                      deviceId,
-                      serviceId,
-                      characteristicId,
-                      value: buffer,
-                      success (res) {
-                        Reconnect_count = 0
-                      },
-                      fail: (res) => {
-                        that.setData({
-                          tips: "蓝牙设备名称写入失败\n" + res.errCode + "\n" + res.errMsg,
-                          backgroundcolor: "#3d8ae5",
-                          button_disabled: false,
-                        })
-                      },
-                    })
+                    var res = getApp().Command_Send(deviceId, serviceId, characteristicId, buffer)
+                    if(res.result == false) {
+                      that.setData({
+                        tips: "蓝牙设备名称写入失败\n" + res.detail.errCode + "\n" + res.detail.errMsg,
+                        backgroundcolor: "#3d8ae5",
+                        button_disabled: false,
+                      })
+                    }
                   },
                   fail: (res) => {
                     that.setData({
@@ -272,7 +259,7 @@ Page({
                 })
               }
             }
-          })
+          })*/
         }, 500);
         //clearTimeout(Timeout_number);
       }
