@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    title: "设定蓝牙设备名称",
   },
 
   /**
@@ -205,7 +205,7 @@ Page({
 
 
 
-          getApp().Command_Send(3, buffer)
+          getApp().Command_Send(3, buffer, "")
           /*wx.writeBLECharacteristicValue({
             deviceId,
             serviceId,
