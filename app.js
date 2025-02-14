@@ -8,7 +8,6 @@ App({
     characteristicsFE63: "",
     Reconnect: false,
     Reconnect_count: 0,//重连次数
-    Reconnect_error: false,//重连故障
     currentPage: null,//当前页面
   },
 
@@ -84,7 +83,7 @@ App({
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   BLE_Reconnect: async function(deviceId, serviceId) {
     var that = this;
-    that.globalData.Reconnect_error = false;
+    var result = true;
 
     await new Promise((resolve, reject) => {
       wx.createBLEConnection({
@@ -95,7 +94,7 @@ App({
           resolve();
         },
         fail: (res) => {
-          that.globalData.Reconnect_error = true;
+          result = false;
           reject();
         }
       })
@@ -109,7 +108,7 @@ App({
           resolve();
         },
         fail: (res) => {
-          that.globalData.Reconnect_error = true;
+          result = false;
           reject();
         }
       })
@@ -124,11 +123,13 @@ App({
           resolve();
         },
         fail: (res) => {
-          that.globalData.Reconnect_error = true;
+          result = false;
           reject();
         }
       })
     })
+
+    return result;
   },
 
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -140,6 +141,43 @@ App({
       backgroundcolor: "#3d8ae5",
       button_disabled: false,
     })
+  },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：蓝牙指令发送
+  //注意：getApp().globalData.Reconnect_count在每一页面的初始载入中必须清零，重连计数是针对某一页面进行的。
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  Command_Send_Once: async function(deviceId, serviceId, characteristicId, buffer) {
+    var result = true
+    var detail
+    var that = this
+    await new Promise((resolve, reject) => {
+      //建议每次写入不超过 20 字节。
+      //若单次写入数据过长，iOS 上存在系统不会有任何回调的情况（包括错误回调）。
+      wx.writeBLECharacteristicValue({
+        deviceId,
+        serviceId,
+        characteristicId,
+        value: buffer,
+        success (res) {
+          that.globalData.Reconnect_count = 0
+          resolve();
+        },
+        fail: (res) => {
+          /*result = 1//此处赋值未成功，需要等待回调函数异步完成
+          detail = res*/
+          console.error(res)
+          result = false
+          detail = res
+          reject();
+        }
+      })
+    })
+
+    return {
+      result: result,
+      detail: detail,
+    }
   },
 
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -162,6 +200,8 @@ App({
     }
 
 
+    var result = true
+    var res = null
     var that = this;
     /*var result = 0
     var detail*/
@@ -172,6 +212,9 @@ App({
       
       //that.Make_myPromise_1(); //执行异步操作（用于诸操作异步执行，不相等待的情况）
       //await that.Make_myPromise_2(); //等待异步操作完成（用于需要等待异步操作完成的情况，所在函数需冠以async）
+      //await是一种无阻塞等待
+      //使用await，方可通过try...catch结构捕获异步操作中的错误
+      //如果要通过await同时执行多个异步操作，则使用await Promise.all([,]);
       console.log("你会看到异步执行的顺序")
 
       await that.BLE_Reconnect(deviceId, serviceId)
@@ -202,67 +245,67 @@ App({
       wx.closeBluetoothAdapter({})
     })*/
     //稍待
-    var Timeout_number = setTimeout(function() {
-      // 这里是500毫秒后需要执行的任务
-      /*******************************/
-      /************蓝牙写入************/
-      /*******************************/
-      //建议每次写入不超过 20 字节。
-      //若单次写入数据过长，iOS 上存在系统不会有任何回调的情况（包括错误回调）。
-      wx.writeBLECharacteristicValue({
-        deviceId,
-        serviceId,
-        characteristicId,
-        value: buffer,
-        success (res) {
-          that.globalData.Reconnect_count = 0
-        },
-        fail: (res) => {
-          /*result = 1//此处赋值未成功，需要等待回调函数异步完成
-          detail = res*/
-          console.error(res)
-          var ares = res
-          that.globalData.currentPage.setData({
-            tips: "蓝牙设备名称写入失败\n" + ares.errCode + "\n" + ares.errMsg,
-            backgroundcolor: "#3d8ae5",
-            button_disabled: false,
-          })
+    await new Promise((resolve, reject) => {
+      var Timeout_number = setTimeout(function() {
+        // 这里是500毫秒后需要执行的任务
+        resolve();
+      }, 500);
+    })
+    
+    /*******************************/
+    /************蓝牙写入************/
+    /*******************************/
+    var temp = await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer)
 
-          if(that.globalData.Reconnect){
-            //重连
-            await that.BLE_Reconnect(deviceId, serviceId)
-            if(that.globalData.Reconnect_error == false) {
-              console.log("重构连接成功！")
-              that.globalData.Reconnect = false
-            }
-            else {
-              that.globalData.Reconnect_count++
-              console.log("重连失败-" + that.globalData.Reconnect_count)
-              if(that.globalData.Reconnect_count < 3){
-                Restore_Controls(operate, ares)
-              }
-              else {
-                //假设没有向后翻页
-                that.globalData.Reconnect = false
-                //返回连接页
-                //console.log(getCurrentPages())
-                var pagestacks = getCurrentPages()
-                var step = pagestacks.length - 2
-                if(step > 0){
-                  wx.navigateBack({
-                    delta: step
-                  })
-                }
-              }
+    if(temp.result == false) {
+      result = false
+      res = temp.detail
+      if(that.globalData.Reconnect){
+        //重连
+        if(await that.BLE_Reconnect(deviceId, serviceId)) {
+          console.log("重构连接成功！")
+          //that.globalData.Reconnect = false
+          //立即重发
+          if(await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer).result) {
+            result = true
+          }
+          else {
+            //第二失败
+            that.Restore_Controls(operate, res) //给出的仍是第一次发送失败之原因
+          }
+        }
+        else {
+          //第一失败
+          that.globalData.Reconnect_count++
+          console.log("重连失败-" + that.globalData.Reconnect_count)
+          if(that.globalData.Reconnect_count < 3){
+            that.Restore_Controls(operate, res) //未能给出重连失败原因
+          }
+          else {
+            //假设没有向后翻页
+            that.globalData.Reconnect = false
+            //返回连接页
+            //console.log(getCurrentPages())
+            var pagestacks = getCurrentPages()
+            var step = pagestacks.length - 2
+            if(step > 0){
+              wx.navigateBack({
+                delta: step
+              })
             }
           }
         }
-      })
-    }, 500);
+      }
+      else {
+        //第〇失败
+        that.Restore_Controls(operate, res)
+      }
+    }
 
     /*return {
       result: result,
       detail: detail,
     }*/
+    return result
   },
 })

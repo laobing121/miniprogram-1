@@ -19,6 +19,7 @@ Page({
     //获取当前页面
     getApp().TogetCurrentPage()
     //console.log(getApp().globalData.currentPage)
+    getApp().globalData.Reconnect_count = 0;
 
     button_command = 0
     this.setData({
@@ -205,7 +206,13 @@ Page({
 
 
 
-          getApp().Command_Send(3, buffer, "")
+          if(getApp().Command_Send(3, buffer, that.data.title)) {
+            that.setData({
+              tips: "蓝牙设备名称写入成功！！！！！\n",// + res.detail.errCode + "\n" + res.detail.errMsg,
+              backgroundcolor: "#3d8ae5",
+              button_disabled: false,
+            })
+          }
           /*wx.writeBLECharacteristicValue({
             deviceId,
             serviceId,

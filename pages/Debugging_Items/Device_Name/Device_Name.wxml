@@ -1,6 +1,6 @@
 <!--pages/Debugging_Items/Device_Name/Device_Name.wxml-->
 <view class="container">
-  <text class='txt'>"123"</text>
+  <text class='txt'>{{title}}</text>
 
   <view class='abc'>
   <input class="input" bindinput="bindInput"  type="digit" placeholder="请输入产品ID…" value="{{input_value}}">{{input}}</input>
