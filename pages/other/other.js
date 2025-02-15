@@ -25,6 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    console.log(deviceId)
     button_command = 0
     value = ""
     this.setData({
@@ -64,7 +65,28 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    console.log("页面卸载")
+    console.log(deviceId)
+    //deviceId = getApp().globalData.deviceId
+    if(!(deviceId === undefined)) {
+      wx.closeBLEConnection({
+        deviceId,
+        success (res) {
+          console.log(res)
+        },
+        fail (res) {
+          console.log(res)
+        }
+      })
+    }
+    wx.closeBluetoothAdapter({
+      success (res) {
+        console.log(res)
+      }
+    })
+    //wx.onBLEConnectionStateChange()
+    wx.offBluetoothDeviceFound()
+    wx.offBluetoothAdapterStateChange()
   },
 
   /**
