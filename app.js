@@ -95,11 +95,14 @@ App({
         },
         fail: (res) => {
           result = false;
-          reject();
+          reject(res);
         }
       })
+    }).catch(function(error) { //定义reject回调函数
+      console.error(error);
     })
-
+    
+    if(result) {
     await new Promise((resolve, reject) => {
       wx.getBLEDeviceServices({
         deviceId, // 搜索到设备的 deviceId
@@ -109,9 +112,11 @@ App({
         },
         fail: (res) => {
           result = false;
-          reject();
+          reject(res);
         }
       })
+    }).catch(function(error) { //定义reject回调函数
+      console.error(error);
     })
 
     await new Promise((resolve, reject) => {
@@ -124,11 +129,13 @@ App({
         },
         fail: (res) => {
           result = false;
-          reject();
+          reject(res);
         }
       })
-    })
-
+    }).catch(function(error) { //定义reject回调函数
+      console.error(error);
+    })}
+    
     return result;
   },
 
@@ -169,9 +176,11 @@ App({
           console.error(res)
           result = false
           detail = res
-          reject();
+          reject(res);
         }
       })
+    }).catch(function(error) { //定义reject回调函数
+      console.error(error);
     })
 
     return {
@@ -324,10 +333,13 @@ App({
           count++
           if(count >= 8) { //最多等待4秒
             result = false //未收到反馈
-            reject()
+            reject("蓝牙设备反馈超时")
           }
         }, 500);
-      }).finally(() => { //定义必然回调函数
+      }).catch(function(error) { //定义reject回调函数
+        console.error(error);
+      })
+      .finally(() => { //定义必然回调函数
         clearInterval(Interval_number)
         wx.offBLECharacteristicValueChange()
       })
