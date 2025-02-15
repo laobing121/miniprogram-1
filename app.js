@@ -203,6 +203,7 @@ App({
     var result = true
     var res = null
     var that = this;
+    var valid = false
     /*var result = 0
     var detail*/
     /*******************************/
@@ -221,35 +222,38 @@ App({
     }
     
     /*******************************/
+    /**********监听蓝牙反馈**********/
+    /*******************************/
+    // 操作之前先监听，保证第一时间获取数据
+    wx.onBLECharacteristicValueChange((result) => {
+      console.log(result)
+      //valid = true
+      valid = Data_Analysis(result)
+      /*// 使用完成后在合适的时机断开连接和关闭蓝牙适配器
+      wx.closeBLEConnection({
+        deviceId,
+      })
+      wx.closeBluetoothAdapter({})*/
+    }),
+
+    /*******************************/
     /**********允许蓝牙反馈**********/
     /*******************************/
     // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-    /*wx.notifyBLECharacteristicValueChange({
+    wx.notifyBLECharacteristicValueChange({
       deviceId,
       serviceId,
       characteristicId,
       state: true,
-    })*/
-    /*******************************/
-    /**********监听蓝牙反馈**********/
-    /*******************************/
-    // 操作之前先监听，保证第一时间获取数据
-    /*wx.onBLECharacteristicValueChange((result) => {
-      console.log(result)
-
-
-      // 使用完成后在合适的时机断开连接和关闭蓝牙适配器
-      wx.closeBLEConnection({
-        deviceId,
-      })
-      wx.closeBluetoothAdapter({})
-    })*/
+    })
+    
     //稍待
     await new Promise((resolve, reject) => {
       var Timeout_number = setTimeout(function() {
         // 这里是500毫秒后需要执行的任务
         resolve();
       }, 500);
+      //clearTimeout(Timeout_number);
     })
     
     /*******************************/
@@ -282,6 +286,8 @@ App({
             that.Restore_Controls(operate, res) //未能给出重连失败原因
           }
           else {
+            wx.offBLECharacteristicValueChange()
+
             //假设没有向后翻页
             that.globalData.Reconnect = false
             //返回连接页
@@ -302,10 +308,38 @@ App({
       }
     }
 
+    if(result) {
+      var count = 0
+      var Interval_number
+      await new Promise((resolve, reject) => {
+        Interval_number = setInterval(function() {
+          if(valid) {
+            resolve()
+          }
+
+          count++
+          if(count >= 8) { //最多等待4秒
+            result = false //未收到反馈
+            reject()
+          }
+        }, 500);
+      }).finally(() => { //定义必然回调函数
+        clearInterval(Interval_number)
+        wx.offBLECharacteristicValueChange()
+      })
+    }
+    console.log(result)
     /*return {
       result: result,
       detail: detail,
     }*/
     return result
+  },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：蓝牙数据分析
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  Data_Analysis: function(result) {
+    return true
   },
 })
