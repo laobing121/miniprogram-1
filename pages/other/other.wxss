@@ -10,6 +10,7 @@
 
 .radio-group {
   border-bottom: 1px solid #ddd;
+  margin-bottom: 30rpx;
 }
 .radio {
   display: block;

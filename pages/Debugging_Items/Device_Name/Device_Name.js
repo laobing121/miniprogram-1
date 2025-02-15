@@ -172,11 +172,42 @@ Page({
           
 
 
+          var data = await getApp().Command_Send(3, buffer, that.data.title)
+          if(data.result) { //只处理正常结果，不处理异常结果
+            var tips_text = ""
+            console.log(data.detail)
+            if(data.detail.value.byteLength >= 5) { //返回字节数吻合
+              var dataArray = new Uint8Array(data.detail.value)
+              /*var dataStr = ""
+              dataArray.forEach((item) => {
+                dataStr += ("0x" + item.toString(16) + " ")
+              })
+              console.log(dataStr)*/
+              /*let hexArr = Array.prototype.map.call(
+                dataArray,
+                (item) => {
+                  return '0x' + ('0' + item.toString(16)).slice(-2).toUpperCase()
+                }
+              )
+              console.log(hexArr.join(' '))*/
+              if(dataArray[0] == 0x04 && 
+                dataArray[1] == 0xFC && 
+                dataArray[2] == 0x07 && 
+                dataArray[3] == 0x01 && 
+                dataArray[4] == 0x00) {
+                  tips_text = that.data.title + "成功!\n"
+              }
+              else {
+                tips_text = "设备响应内容不符。"
+              }
+            }
+            else {
+              tips_text = "设备响应长度不符。"
+            }
 
-          if(await getApp().Command_Send(3, buffer, that.data.title)) {
             //蓝牙设备名称写入成功！！！！！后，localName立即修改完成，稍后name方修改完成。即搜索到的蓝牙设备名称需要稍待片刻才会发生改变
             that.setData({
-              tips: "蓝牙设备名称写入成功！！！！！\n",// + res.detail.errCode + "\n" + res.detail.errMsg,
+              tips: tips_text,
               backgroundcolor: "#3d8ae5",
               button_disabled: false,
             })

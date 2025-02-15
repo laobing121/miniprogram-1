@@ -202,6 +202,7 @@ App({
 
     var result = true
     var res = null
+    var detail
     var that = this;
     var valid = false
     /*var result = 0
@@ -228,7 +229,10 @@ App({
     wx.onBLECharacteristicValueChange((result) => {
       console.log(result)
       //valid = true
-      valid = Data_Analysis(result)
+      if(that.Data_Analysis(result)) {
+        detail = result //交割数据
+        valid = true
+      }
       /*// 使用完成后在合适的时机断开连接和关闭蓝牙适配器
       wx.closeBLEConnection({
         deviceId,
@@ -328,12 +332,11 @@ App({
         wx.offBLECharacteristicValueChange()
       })
     }
-    console.log(result)
-    /*return {
+    
+    return {
       result: result,
       detail: detail,
-    }*/
-    return result
+    }
   },
 
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
