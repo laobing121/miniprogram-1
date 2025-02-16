@@ -283,10 +283,11 @@ App({
           console.log("重构连接成功！")
           //that.globalData.Reconnect = false
           //立即重发
-          if(await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer).result) {
+          temp = await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer)
+          if(temp.result) {console.log("xxxxxxxxxxxxxxx！")
             result = true
           }
-          else {
+          else {console.log("yyyyyyyyyyyyyyyyy！")
             //第二失败
             that.Restore_Controls(operate, res) //给出的仍是第一次发送失败之原因
           }
