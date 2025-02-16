@@ -26,7 +26,8 @@
     "pages/Features/Transducer_Type/Transducer_Type",
     "pages/debug/debug",
     "pages/Debugging_Items/RSSI/RSSI",
-    "pages/Debugging_Items/Device_Name/Device_Name"
+    "pages/Debugging_Items/Device_Name/Device_Name",
+    "pages/Debugging_Items/BLE_Parameters/BLE_Parameters"
   ],
   "darkmode": true,
   "window": {

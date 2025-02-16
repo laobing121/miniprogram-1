@@ -9,6 +9,22 @@
   box-sizing: border-box;
 } 
 
+.container2 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /**align-items: center;**/
+  justify-content: space-between;
+  padding: 150rpx 0;
+  box-sizing: border-box;
+} 
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} 
+
 .txt{
   color: #3d8ae5;
   font-size:50rpx;
@@ -16,6 +32,15 @@
   position: fixed;
   align-items: center;
   top: 50rpx;
+}
+
+.txt1{
+  color: #3d8ae5;
+  font-size:50rpx;
+  font-weight: 550;
+  /**position: fixed;**/
+  align-items: center;
+  /**top: 50rpx;**/
 }
 
 .txt2{
@@ -42,7 +67,7 @@
 }
 
 .picker{
-  padding: 13px;
+  /**padding: 13px;**/
   width: 500rpx;
   height: 100rpx;
   font-size: 70rpx;
@@ -50,6 +75,9 @@
   border-color: #3d8ae5;
   border-width: 5rpx;
   border-style: solid;
+
+  display: flex;
+  justify-content: center;
 }
 
 .slider{
@@ -84,6 +112,31 @@
   
     display:flex;
     flex-direction:row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .abc2{
+    /**border-radius: 10rpx;
+    border-color: #3d8ae5;
+    border-width: 5rpx;
+    border-style: solid;**/
+    /**margin-top: 5rpx;**/
+    padding-top: 50rpx;
+    padding-left: 50rpx;
+  }
+
+  .def{
+    /**border-radius: 10rpx;
+    border-color: #3d8ae5;
+    border-width: 5rpx;
+    border-style: solid;**/
+    margin-top: 5rpx;
+    /**padding-top: 50rpx;
+    padding-left: 50rpx;**/
+  
+    display:flex;
+    flex-direction:column;
     align-items: center;
     justify-content: center;
   }

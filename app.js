@@ -228,7 +228,7 @@ App({
       //如果要通过await同时执行多个异步操作，则使用await Promise.all([,]);
       console.log("你会看到异步执行的顺序")
 
-      await that.BLE_Reconnect(deviceId, serviceId)
+      //await that.BLE_Reconnect(deviceId, serviceId)
     }
     
     /*******************************/
@@ -338,6 +338,7 @@ App({
         }, 500);
       }).catch(function(error) { //定义reject回调函数
         console.error(error);
+        that.Restore_Controls(operate, error)
       })
       .finally(() => { //定义必然回调函数
         clearInterval(Interval_number)

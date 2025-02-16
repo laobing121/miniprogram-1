@@ -1,7 +1,6 @@
 // pages/Debugging_Items/Device_Name/Device_Name.js
 var button_command
 var value
-var Reconnect_count = 0//重连次数
 
 Page({
 
