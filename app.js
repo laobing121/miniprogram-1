@@ -81,7 +81,7 @@ App({
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   //    函数说明：重新建立蓝牙连接
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  BLE_Reconnect: async function(deviceId, serviceId) {
+  BLE_Reconnect: async function(deviceId, serviceId, characteristicId) {
     var that = this;
     var result = true;
 
@@ -134,7 +134,18 @@ App({
       })
     }).catch(function(error) { //定义reject回调函数
       console.error(error);
-    })}
+    })
+  
+    /*******************************/
+    /**********允许蓝牙反馈**********/
+    /*******************************/
+    // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
+    wx.notifyBLECharacteristicValueChange({
+      deviceId,
+      serviceId,
+      characteristicId,
+      state: true,
+    })} // notifyBLECharacteristicValueChange会随着连接断开而失效
     
     return result;
   },
@@ -228,7 +239,7 @@ App({
       //如果要通过await同时执行多个异步操作，则使用await Promise.all([,]);
       console.log("你会看到异步执行的顺序")
 
-      //await that.BLE_Reconnect(deviceId, serviceId)
+      await that.BLE_Reconnect(deviceId, serviceId, characteristicId)
     }
     
     /*******************************/
@@ -249,16 +260,7 @@ App({
       wx.closeBluetoothAdapter({})*/
     }),
 
-    /*******************************/
-    /**********允许蓝牙反馈**********/
-    /*******************************/
-    // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
-    wx.notifyBLECharacteristicValueChange({
-      deviceId,
-      serviceId,
-      characteristicId,
-      state: true,
-    })
+    
     
     //稍待
     await new Promise((resolve, reject) => {
@@ -279,15 +281,14 @@ App({
       res = temp.detail
       if(that.globalData.Reconnect){
         //重连
-        if(await that.BLE_Reconnect(deviceId, serviceId)) {
+        if(await that.BLE_Reconnect(deviceId, serviceId, characteristicId)) {
           console.log("重构连接成功！")
           //that.globalData.Reconnect = false
           //立即重发
-          temp = await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer)
-          if(temp.result) {console.log("xxxxxxxxxxxxxxx！")
+          if((await that.Command_Send_Once(deviceId, serviceId, characteristicId, buffer)).result) {
             result = true
           }
-          else {console.log("yyyyyyyyyyyyyyyyy！")
+          else {
             //第二失败
             that.Restore_Controls(operate, res) //给出的仍是第一次发送失败之原因
           }
