@@ -1,0 +1,15 @@
+<!--pages/Debugging_Items/BLE_information/BLE_information.wxml-->
+
+<view class="title">
+  <text class='txt'>{{title}}</text>
+</view>
+
+<view class="container2">
+  <view class='abc2'>
+    <text class='txt3'>{{value}}</text>
+  </view>
+
+  <view class='def'>
+    <text class='tips'>\n\n{{tips}}</text>
+  </view>
+</view>

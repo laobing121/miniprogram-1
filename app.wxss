@@ -43,6 +43,15 @@
   /**top: 50rpx;**/
 }
 
+.txt3{
+  color: orange;
+  font-size:40rpx;
+  font-weight: 450;
+  /**position: fixed;**/
+  align-items: center;
+  /**top: 50rpx;**/
+}
+
 .txt2{
   font-size:50rpx;
   font-weight: 550;
