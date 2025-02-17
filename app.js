@@ -241,6 +241,18 @@ App({
 
       await that.BLE_Reconnect(deviceId, serviceId, characteristicId)
     }
+    else {
+      /*******************************/
+      /**********允许蓝牙反馈**********/
+      /*******************************/
+      // 必须先启用 wx.notifyBLECharacteristicValueChange 才能监听到设备 onBLECharacteristicValueChange 事件
+      wx.notifyBLECharacteristicValueChange({
+        deviceId,
+        serviceId,
+        characteristicId,
+        state: true,
+      })
+    }
     
     /*******************************/
     /**********监听蓝牙反馈**********/

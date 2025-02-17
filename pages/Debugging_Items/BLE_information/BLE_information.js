@@ -45,12 +45,18 @@ Page({
               const buffer = new ArrayBuffer(data.detail.value.byteLength - 5)
               const uint8Array = new Uint8Array(buffer)
               uint8Array.set(dataArray.slice(5), 0)
-              //const str = decodeURIComponent(escape(String.fromCharCode(...uint8Array)))
-              const str = "12345678901234567890123456789012345678901234567890"
-              that.setData({
-                value: str,
-              })
-              tips_text = that.data.title + "成功!\n"
+              var str
+              try{
+                str = decodeURIComponent(escape(String.fromCharCode(...uint8Array)))
+                //const str = "12345678901234567890123456789012345678901234567890"
+                that.setData({
+                  value: str,
+                })
+                tips_text = that.data.title + "成功!\n"
+              } catch(e) {
+                console.log(e)
+                tips_text = "信息转换故障\n" + e.message
+              }
             }
             else {
               tips_text = "设备响应内容不符。"

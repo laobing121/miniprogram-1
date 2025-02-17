@@ -50,6 +50,8 @@
   /**position: fixed;**/
   align-items: center;
   /**top: 50rpx;**/
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .txt2{
