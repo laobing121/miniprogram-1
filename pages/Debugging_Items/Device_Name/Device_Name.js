@@ -194,6 +194,7 @@ Page({
                 dataArray[2] == 0x07 && 
                 dataArray[3] == 0x01 && 
                 dataArray[4] == 0x00) {
+                  getApp().BLE_Reconnect()
                   tips_text = that.data.title + "成功!\n"
               }
               else {
@@ -204,7 +205,7 @@ Page({
               tips_text = "设备响应长度不符。"
             }
 
-            //蓝牙设备名称写入成功！！！！！后，localName立即修改完成，稍后name方修改完成。即搜索到的蓝牙设备名称需要稍待片刻才会发生改变
+            //蓝牙设备名称写入成功！！！！！后，localName立即修改完成，再次连接后name方修改完成。name即搜索到的蓝牙设备名称。
             that.setData({
               tips: tips_text,
               backgroundcolor: "#3d8ae5",
