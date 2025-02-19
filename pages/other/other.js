@@ -438,7 +438,7 @@ Page({
       });
       
       wx.navigateTo({
-        url: '/pages/' + 'debug' + '/' + 'debug',
+        url: '/pages/' + getApp().globalData.Instrument_type + '/' + getApp().globalData.Instrument_type,
       })
   }
 })

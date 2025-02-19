@@ -11,7 +11,7 @@ Page({
         { name: 'wuf-c', value: 'KCL-C' },
         { name: 'wuw-a', value: 'KCS-A'},
         { name: 'wuw-c', value: 'KCS-C' , checked: 'true' },
-        { name: 'other', value: 'Other equipment'},
+        { name: 'debug', value: 'Other equipment'},
     ]
   },
 
@@ -20,6 +20,7 @@ Page({
    */
   onLoad(options) {
     radio_value = 'wuw-c';
+    getApp().globalData.Instrument_type = radio_value
   },
 
   /**
@@ -78,6 +79,7 @@ Page({
     /*this.data.items[2].checked = "true";
     console.log(this.data.items)*/
     radio_value = e.detail.value;
+    getApp().globalData.Instrument_type = radio_value
   },
 
   btn1(e) {
@@ -86,7 +88,8 @@ Page({
       backgroundcolor: "grey",
       });
     wx.navigateTo({
-      url: '/pages/' + radio_value + '/' + radio_value,
+      //url: '/pages/' + radio_value + '/' + radio_value,
+      url: '/pages/other/other',
     })
   }
 })

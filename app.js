@@ -9,6 +9,7 @@ App({
     Reconnect: false,
     Reconnect_count: 0,//重连次数
     currentPage: null,//当前页面
+    Instrument_type: null,//当前仪表类型选择
   },
 
   isNumber(val) {
