@@ -112,6 +112,44 @@ Page({
 
   bindInput(e) {
     value = e.detail.value;
+    that.setData({
+      tips: "",
+    })
+  },
+
+  //二维码扫描
+  skyOnclick(event) {
+    var that = this;
+    wx.vibrateShort();
+    that.setData({
+      input_value: "",
+      tips: "",
+    })
+
+    wx.scanCode({
+      success (res) {
+        console.log(res)
+        var temp = res.result;
+        if(String(temp).length <= 15){
+          if(!isNaN(parseFloat(temp)) && isFinite(temp)) {
+            value = temp
+            that.setData({
+              input_value: value,
+            });
+          }
+          else{
+            that.setData({
+              tips: "输入有误.",
+            })
+          }
+        }
+        else {
+          that.setData({
+            tips: "输入有误.",
+          })
+        }
+      }
+    })
   },
 
   btn1(e) {
