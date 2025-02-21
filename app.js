@@ -196,7 +196,7 @@ App({
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   //    函数说明：蓝牙指令发送逻辑
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  Command_Send: async function(characteristicNo, buffer, operate) {
+  Command_Send: async function(characteristicNo, buffer, operate, Wait_enable = true) {
     var deviceId = this.globalData.deviceId
     var serviceId = this.globalData.serviceId
     var characteristicId
@@ -341,7 +341,7 @@ App({
       }
     }
 
-    if(result) {
+    if(result && Wait_enable) {
       var count = 0
       var Interval_number
       await new Promise((resolve, reject) => {
@@ -364,6 +364,10 @@ App({
         clearInterval(Interval_number)
         wx.offBLECharacteristicValueChange()
       })
+    }
+
+    if(!Wait_enable) {
+      wx.offBLECharacteristicValueChange()
     }
     
     return {
