@@ -194,7 +194,8 @@ Page({
                 dataArray[2] == 0x07 && 
                 dataArray[3] == 0x01 && 
                 dataArray[4] == 0x00) {
-                  getApp().BLE_Reconnect()
+                  await getApp().BLE_Connection_close()
+                  await getApp().BLE_Reconnect()
                   tips_text = that.data.title + "成功!\n"
               }
               else {

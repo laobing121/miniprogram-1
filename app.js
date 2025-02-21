@@ -144,6 +144,34 @@ App({
   },
 
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：断开蓝牙连接
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  BLE_Connection_close: async function() {
+    var deviceId = this.globalData.deviceId
+
+    var that = this;
+    var result = true;
+
+    await new Promise((resolve, reject) => {
+      wx.closeBLEConnection({
+        deviceId,
+        success: (res) => {
+          console.log("断开成功！")
+          resolve();
+        },
+        fail: (res) => {
+          result = false;
+          reject(res);
+        }
+      })
+    }).catch(function(error) { //定义reject回调函数
+      console.error(error);
+    })
+    
+    return result;
+  },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   //    函数说明：跨页面控件操控
   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   Restore_Controls: function(operate, ares) {
@@ -461,9 +489,9 @@ App({
     0x43, 0x83, 0x41, 0x81, 0x80, 0x40,
   ],
   calculateCRC16: function(puchMsg, usDataLen) {
-    uchCRCHi = 0xFF;//高CRC字节初始化
-    uchCRCLo = 0xFF;//低CRC字节初始化
-    uIndex = 0x00;         //CRC循环中的索引
+    var uchCRCHi = 0xFF;//高CRC字节初始化
+    var uchCRCLo = 0xFF;//低CRC字节初始化
+    var uIndex = 0x00;         //CRC循环中的索引
     
     for(let i = 0; i < usDataLen; i++)
     {
