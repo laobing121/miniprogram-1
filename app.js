@@ -245,7 +245,7 @@ App({
       wx.notifyBLECharacteristicValueChange({
         deviceId,
         serviceId,
-        notify_characteristicId,
+        characteristicId: notify_characteristicId,
         state: true,
       }) // notifyBLECharacteristicValueChange会随着连接断开而失效
     
@@ -297,7 +297,7 @@ App({
           wx.notifyBLECharacteristicValueChange({
             deviceId,
             serviceId,
-            notify_characteristicId,
+            characteristicId: notify_characteristicId,
             state: true,
           }) // notifyBLECharacteristicValueChange会随着连接断开而失效
           console.log("重构连接成功！")
