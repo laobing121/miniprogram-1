@@ -28,7 +28,8 @@
     "pages/Debugging_Items/RSSI/RSSI",
     "pages/Debugging_Items/Device_Name/Device_Name",
     "pages/Debugging_Items/BLE_Parameters/BLE_Parameters",
-    "pages/Debugging_Items/BLE_information/BLE_information"
+    "pages/Debugging_Items/BLE_information/BLE_information",
+    "pages/Debugging_Items/BLE_initialization/BLE_initialization"
   ],
   "darkmode": true,
   "window": {

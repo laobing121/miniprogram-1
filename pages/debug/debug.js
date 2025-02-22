@@ -10,6 +10,7 @@ Page({
       { name: 'Device_Name', value: '002 修改设备名称' },
       { name: 'BLE_Parameters', value: '003 设定蓝牙参数' },
       { name: 'BLE_information', value: '004 查询蓝牙信息' },
+      { name: 'BLE_initialization', value: '005 初始化蓝牙参数' },
     ]
   },
 
