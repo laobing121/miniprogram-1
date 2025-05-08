@@ -29,7 +29,14 @@
     "pages/Debugging_Items/Device_Name/Device_Name",
     "pages/Debugging_Items/BLE_Parameters/BLE_Parameters",
     "pages/Debugging_Items/BLE_information/BLE_information",
-    "pages/Debugging_Items/BLE_initialization/BLE_initialization"
+    "pages/Debugging_Items/BLE_initialization/BLE_initialization",
+    "pages/Parameter_Items/Installation_conditions/Installation_conditions",
+    "pages/Parameter_Items/Metering_parameters/Metering_parameters",
+    "pages/Parameter_Items/Display_settings/Display_settings",
+    "pages/Parameter_Items/Output_interface/Output_interface",
+    "pages/Parameter_Items/Other_options/Other_options",
+    "pages/Parameter_Items/Channel_parameters/Channel_parameters",
+    "pages/Parameter_Items/Multi-stage_tuning/Multi-stage_tuning"
   ],
   "darkmode": true,
   "window": {

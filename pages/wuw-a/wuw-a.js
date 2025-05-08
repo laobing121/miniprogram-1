@@ -6,8 +6,8 @@ Page({
    */
   data: {
     items: [
-      { name: 'Data', value: '001 读取当前数据' },
-      { name: 'Parameter', value: '002 读取当前参数' },
+      { name: 'Parameter', value: '001 仪表参数设置' },
+      { name: 'Data', value: '002 读取当前参数' },
       { name: 'Transducer_Type', value: '003 设置公称直径' },
       { name: 'Startup', value: '004 设定始动流速'},
       { name: 'Baud_Rate', value: '005 设置波特率'},

@@ -1,0 +1,51 @@
+<!--pages/Parameter_Items/Metering_parameters/Metering_parameters.wxml-->
+<!--<text>pages/Parameter_Items/Metering_parameters/Metering_parameters.wxml</text>-->
+
+<view class="title">
+  <text class='txt'>{{title}}</text>
+</view>
+
+<view class="container2">
+  <view class='abc2'>
+    <text class='txt1'>零流量(m3/h):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="请输入…" value="{{input_value1}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+    <text>有效范围：-500 ~ +500</text>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>始动流速(m/s):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput2" type="digit" placeholder="请输入…" value="{{input_value2}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+    <text>有效范围：0 ~ 2</text>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>修正系数:</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput3" type="digit" placeholder="请输入…" value="{{input_value3}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+    <text>有效范围：0.5 ~ 1.8</text>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>计量方向:</text>
+  </view>
+  <view class='def'>
+    <picker bindchange="bindPickerChange" value="{{index1}}" range="{{array1}}" disabled="{{option1_disabled}}">
+      <view class="picker">
+        {{array1[index1]}}
+      </view>
+    </picker>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>滑动平均参数:</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput4" type="digit" placeholder="请输入…" value="{{input_value4}}" style="border-color:{{bordercolor}};">{{input}}</input>
+    <text>有效范围：1 ~ 60</text>
+  </view>
+</view>

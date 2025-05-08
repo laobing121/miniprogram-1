@@ -10,6 +10,173 @@ App({
     Reconnect_count: 0,//重连次数
     currentPage: null,//当前页面
     Instrument_type: null,//当前仪表类型选择
+    Parameter_readed: false,
+  },
+
+  Param: {
+    Diameter: 300,
+    Mounting_Distance: 0,
+    Zero: 0,
+    Startup: 0.01,
+    Correction_Factor: 1,
+    Fluid_Velocity: 1469.3,
+    Moving_Average: 10,
+    Channel_parameters: [
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+    ],
+    Multi_params: [
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+    ],
+    Propagation_delay: 0,
+    Channel_amount: 4,
+    Sensors_Type: 0,
+    Installation_Method: 0,
+    Measuring_Direction: 1,
+    Transmission_Mode: 0,
+    Multistage_number: 9,
+    Mono_track_test: 0,
+    even_number: 0,
+    LRV: 4095,
+    URV: 2,
+    Mailing_Address: 1,
+    User_Password: 0,
+    mA_4: 0.7,
+    mA_20: 0.6,
+    Wall_thickness: 6,
+    Lining_thickness: 0.8,
+    Wall_sound_velocity: 3000,
+    Lining_sound_velocity: 3000,
+    Fluid_temperature: 16,
+    Pulse_Width: 10,
+    Pulse_Equivalent: 0.001,
+    Alarm_Low: 0,
+    Alarm_High: 200,
+    UI_Language: 0,
+    Unit_Flow_rate: 0,
+    Unit_Flow_total: 0,
+    Unit_Flow_velocity: 0,
+    Baud_Rate: 2,
+    Parity_Bit: 0,
+    Password: 0,
+    Cheat: 0,
+    Communication_Protocol: 0,
+    Transducer_Type: 0,
+    AutoPatchWork: 0,
+    Wall_material: 0,
+    Lining_material: 0,
+    Fluid_type: 0,
+    Pulse_Function: 0,
+    Multistage_number_R: 9,
+    CRCHi: 0,
+    CRCLo: 0,
+  },
+
+  Param_temp: {
+    Diameter: 300,
+    Mounting_Distance: 0,
+    Zero: 0,
+    Startup: 0.01,
+    Correction_Factor: 1,
+    Fluid_Velocity: 1469.3,
+    Moving_Average: 10,
+    Channel_parameters: [
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+      {Channel_Length: 346.41, Channel_Angle: 60, Channel_Offset: 0},
+    ],
+    Multi_params: [
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+      {flowP: 0.00, factP: 1.00000, flowN: 0.00, factN: 1.00000},
+    ],
+    Propagation_delay: 0,
+    Channel_amount: 4,
+    Sensors_Type: 0,
+    Installation_Method: 0,
+    Measuring_Direction: 1,
+    Transmission_Mode: 0,
+    Multistage_number: 9,
+    Mono_track_test: 0,
+    even_number: 0,
+    LRV: 4095,
+    URV: 2,
+    Mailing_Address: 1,
+    User_Password: 0,
+    mA_4: 0.7,
+    mA_20: 0.6,
+    Wall_thickness: 6,
+    Lining_thickness: 0.8,
+    Wall_sound_velocity: 3000,
+    Lining_sound_velocity: 3000,
+    Fluid_temperature: 16,
+    Pulse_Width: 10,
+    Pulse_Equivalent: 0.001,
+    Alarm_Low: 0,
+    Alarm_High: 200,
+    UI_Language: 0,
+    Unit_Flow_rate: 0,
+    Unit_Flow_total: 0,
+    Unit_Flow_velocity: 0,
+    Baud_Rate: 2,
+    Parity_Bit: 0,
+    Password: 0,
+    Cheat: 0,
+    Communication_Protocol: 0,
+    Transducer_Type: 0,
+    AutoPatchWork: 0,
+    Wall_material: 0,
+    Lining_material: 0,
+    Fluid_type: 0,
+    Pulse_Function: 0,
+    Multistage_number_R: 9,
+    CRCHi: 0,
+    CRCLo: 0,
   },
 
   isNumber(val) {
@@ -502,4 +669,33 @@ App({
     
     return uchCRCHi<<8 | uchCRCLo;
   },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：四字节转为浮点数
+  //    byteArray——四字节数组
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  bytesToFloat: function(byteArray) {
+    const dataView = new DataView(byteArray);
+    //console.log(dataView)
+    return dataView.getFloat32(0, true); // 读取浮点数
+  },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：浮点数转为四字节
+  //    data——待转换浮点数
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  floatToBytes: function(float) {
+    const buffer = new ArrayBuffer(4); // 创建一个 4 字节的缓冲区
+    const view = new DataView(buffer); // 使用 DataView 操作缓冲区
+    view.setFloat32(0, float, true); // 将浮点数写入缓冲区（小端序）（Little Endian）
+    console.log(buffer)
+    return new Uint8Array(buffer);
+  },
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //    函数说明：仪表参数检查
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  Parameter_checking: function() {
+
+  }
 })

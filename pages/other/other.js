@@ -67,6 +67,7 @@ Page({
   onUnload() {
     console.log("页面卸载")
     console.log(deviceId)
+    getApp().globalData.Parameter_readed = false
     //deviceId = getApp().globalData.deviceId
     if(!(deviceId === undefined)) {
       wx.closeBLEConnection({
@@ -391,6 +392,7 @@ Page({
       /*******************************/
       /************断开连接************/
       /*******************************/
+      getApp().globalData.Parameter_readed = false
       deviceId = getApp().globalData.deviceId
       wx.closeBLEConnection({
         deviceId,

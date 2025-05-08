@@ -1,1 +1,4 @@
 /* pages/Features/Parameter/Parameter.wxss */
+.btnGroup{
+  margin-top: 30rpx;
+}

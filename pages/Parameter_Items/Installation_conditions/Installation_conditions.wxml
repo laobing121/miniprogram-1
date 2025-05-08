@@ -1,0 +1,16 @@
+<!--pages/Parameter_Items/Installation_conditions/Installation_conditions.wxml-->
+<!--<text>pages/Parameter_Items/Installation_conditions/Installation_conditions.wxml</text>-->
+
+<view class="title">
+  <text class='txt'>{{title}}</text>
+</view>
+
+<view class="container2">
+  <view class='abc2'>
+    <text class='txt1'>管道内径(mm):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="请输入…" value="{{input_value1}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+    <text>有效范围：20 ~ 10000</text>
+  </view>
+</view>
