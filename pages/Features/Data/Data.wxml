@@ -1,2 +1,73 @@
 <!--pages/Features/Data/Data.wxml-->
-<text>pages/Features/Data/Data.wxml</text>
+<!--<text>pages/Features/Data/Data.wxml</text>-->
+
+<view class="title">
+  <text class='txt'>{{title}}</text>
+</view>
+
+<view class="container2">
+  <view class='def'>
+    <button class='btn1' style="background-color:{{backgroundcolor}}" bindtap="btn1" disabled="{{button_disabled}}">{{buttonText}}</button>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>瞬时流量(m3/h):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value1}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>流速(m/s):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value2}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>正累计流量(m3):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value3}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>负累计流量(m3):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value4}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>压力(MPa):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value5}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>温度(℃):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value6}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>累计测量时间(小时):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value7}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='abc2'>
+    <text class='txt1'>累计运行时间(小时):</text>
+  </view>
+  <view class='def'>
+    <input class="input" bindinput="bindInput1" type="digit" placeholder="" value="{{input_value8}}" style="border-color:{{bordercolor}};" disabled="{{value1_disabled}}">{{input}}</input>
+  </view>
+
+  <view class='def'>
+    <text class='tips'>\n\n{{countings}}</text>
+    <text class='tips'>\n\n{{tips}}</text>
+  </view>
+</view>

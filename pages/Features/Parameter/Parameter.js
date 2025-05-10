@@ -576,6 +576,9 @@ Page({
         }
         var data = await getApp().Command_Send(1, arrayBuffer1, that.data.title, false)
         if(data.result) {
+          that.setData({
+            tips: "设置仪表参数【1】…",
+          })
           ////////////////////////////////////////
           /////////////第1组//////////////////////
           ////////////////////////////////////////
@@ -598,7 +601,7 @@ Page({
           for(let i = 0; i < 16; i++) {
             dataView.setFloat32(35 + i * 4, getApp().Param.Channel_parameters[i].Channel_Length, true);
           }
-          const crcdataArray = new Uint8Array(arrayBuffer1)
+          var crcdataArray = new Uint8Array(arrayBuffer1)
           var crc = getApp().calculateCRC16(crcdataArray, 99)
           console.log(crc)
           dataView.setUint8(99, Math.floor(crc / 256))
@@ -617,6 +620,9 @@ Page({
                   crc = getApp().calculateCRC16(dataArray, 6)
                   if(dataArray[6] == Math.floor(crc / 256) && 
                   dataArray[7] == crc%256) {
+                    that.setData({
+                      tips: "设置仪表参数【2】…",
+                    })
                     ////////////////////////////////////////
                     /////////////第2组//////////////////////
                     ////////////////////////////////////////
@@ -657,6 +663,9 @@ Page({
                             crc = getApp().calculateCRC16(dataArray, 6)
                             if(dataArray[6] == Math.floor(crc / 256) && 
                             dataArray[7] == crc%256) {
+                              that.setData({
+                                tips: "设置仪表参数【3】…",
+                              })
                               ////////////////////////////////////////
                               /////////////第3组//////////////////////
                               ////////////////////////////////////////
@@ -698,6 +707,9 @@ Page({
                                       crc = getApp().calculateCRC16(dataArray, 6)
                                       if(dataArray[6] == Math.floor(crc / 256) && 
                                       dataArray[7] == crc%256) {
+                                        that.setData({
+                                          tips: "设置仪表参数【4】…",
+                                        })
                                         ////////////////////////////////////////
                                         /////////////第4组//////////////////////
                                         ////////////////////////////////////////
@@ -750,6 +762,9 @@ Page({
                                                 crc = getApp().calculateCRC16(dataArray, 6)
                                                 if(dataArray[6] == Math.floor(crc / 256) && 
                                                 dataArray[7] == crc%256) {
+                                                  that.setData({
+                                                    tips: "设置仪表参数【5】…",
+                                                  })
                                                   ////////////////////////////////////////
                                                   /////////////第5组//////////////////////
                                                   ////////////////////////////////////////
@@ -792,18 +807,21 @@ Page({
                                                           crc = getApp().calculateCRC16(dataArray, 6)
                                                           if(dataArray[6] == Math.floor(crc / 256) && 
                                                           dataArray[7] == crc%256) {
+                                                            that.setData({
+                                                              tips: "设置仪表参数【6】…",
+                                                            })
                                                             ////////////////////////////////////////
                                                             /////////////第6组//////////////////////
                                                             ////////////////////////////////////////
-                                                            arrayBuffer1 = new ArrayBuffer(27)
+                                                            arrayBuffer1 = new ArrayBuffer(25)
                                                             dataView = new DataView(arrayBuffer1)
                                                             dataView.setUint8(0, 0x01)
                                                             dataView.setUint8(1, 0x10)
                                                             dataView.setUint8(2, 0x01)
                                                             dataView.setUint8(3, 0x4A)
                                                             dataView.setUint8(4, 0x00)
-                                                            dataView.setUint8(5, 0x09)
-                                                            dataView.setUint8(6, 0x12)
+                                                            dataView.setUint8(5, 0x08)
+                                                            dataView.setUint8(6, 0x10)
                                                             dataView.setUint8(7, getApp().Param.UI_Language)
                                                             dataView.setUint8(8, getApp().Param.Unit_Flow_rate)
                                                             dataView.setUint8(9, getApp().Param.Unit_Flow_total)
@@ -820,13 +838,11 @@ Page({
                                                             dataView.setUint8(20, getApp().Param.Fluid_type)
                                                             dataView.setUint8(21, getApp().Param.Pulse_Function)
                                                             dataView.setUint8(22, getApp().Param.Multistage_number_R)
-                                                            dataView.setUint8(23, 0)
-                                                            dataView.setUint8(24, 0)
                                                             crcdataArray = new Uint8Array(arrayBuffer1)
-                                                            crc = getApp().calculateCRC16(crcdataArray, 25)
+                                                            crc = getApp().calculateCRC16(crcdataArray, 23)
                                                             console.log(crc)
-                                                            dataView.setUint8(25, Math.floor(crc / 256))
-                                                            dataView.setUint8(26, crc%256)
+                                                            dataView.setUint8(23, Math.floor(crc / 256))
+                                                            dataView.setUint8(24, crc%256)
                                                             data = await getApp().Command_Send(1, arrayBuffer1, "设置仪表参数【6】")
                                                             if(data.result) {
                                                               console.log(data.detail.value)
@@ -837,7 +853,7 @@ Page({
                                                                   dataArray[2] == 0x01 && 
                                                                   dataArray[3] == 0x4A && 
                                                                   dataArray[4] == 0x00 && 
-                                                                  dataArray[5] == 0x09) {
+                                                                  dataArray[5] == 0x08) {
                                                                     crc = getApp().calculateCRC16(dataArray, 6)
                                                                     if(dataArray[6] == Math.floor(crc / 256) && 
                                                                     dataArray[7] == crc%256) {
