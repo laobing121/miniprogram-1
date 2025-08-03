@@ -11,6 +11,8 @@ var value7 //测量时间
 var value8 //运行时间
 var Communication_successful = 0
 var Communication_count = 0
+var Cycle_complete = true
+//锁屏、手机程序切换、微信内小程序切换（浮窗），会中断连续读取，可恢复。
 
 Page({
 
@@ -129,130 +131,136 @@ Page({
         var data = await getApp().Command_Send(1, arrayBuffer1, that.data.title, false)
         if(data.result) {
           Interval_number = setInterval(async function() {
-            Communication_count++
-            // 这里是需要无限循环执行的任务
-            var tips_text = ""
-  
-  
-            arrayBuffer1 = new ArrayBuffer(8)
-            dataView = new DataView(arrayBuffer1)
-            dataView.setUint8(0, 0x01)
-            dataView.setUint8(1, 0x03)
-            dataView.setUint8(2, 0x00)
-            dataView.setUint8(3, 0x00)
-            dataView.setUint8(4, 0x00)
-            dataView.setUint8(5, 0x18)
-            var crcdataArray = new Uint8Array(arrayBuffer1)
-            var crc = getApp().calculateCRC16(crcdataArray, 6)
-            console.log(crc)
-            dataView.setUint8(6, Math.floor(crc / 256))
-            dataView.setUint8(7, crc%256)
-            data = await getApp().Command_Send(1, arrayBuffer1, that.data.title)
-            if(data.result) {
-              console.log(data.detail.value)
-              if(data.detail.value.byteLength >= 53) {
-                var dataArray = new Uint8Array(data.detail.value)
-                if(dataArray[0] == 0x01 && 
-                  dataArray[1] == 0x03 && 
-                  dataArray[2] == 0x30) {
-                    crc = getApp().calculateCRC16(dataArray, 51)
-                    if(dataArray[51] == Math.floor(crc / 256) && 
-                    dataArray[52] == crc%256) {
-                      //数值解析
-                      const buffer = new ArrayBuffer(4)
-                      const uint8Array = new Uint8Array(buffer)
-                      uint8Array.set(dataArray.slice(3, 7), 0)
-                      value1 = getApp().bytesToLong(buffer) / 1000.0;
+            if(Cycle_complete) {
+              Cycle_complete = false
+              
 
-                      uint8Array.set(dataArray.slice(7, 11), 0)
-                      value2 = getApp().bytesToLong(buffer) / 10000.0;
+              Communication_count++
+              // 这里是需要无限循环执行的任务
+              var tips_text = ""
+    
+    
+              arrayBuffer1 = new ArrayBuffer(8)
+              dataView = new DataView(arrayBuffer1)
+              dataView.setUint8(0, 0x01)
+              dataView.setUint8(1, 0x03)
+              dataView.setUint8(2, 0x00)
+              dataView.setUint8(3, 0x00)
+              dataView.setUint8(4, 0x00)
+              dataView.setUint8(5, 0x18)
+              var crcdataArray = new Uint8Array(arrayBuffer1)
+              var crc = getApp().calculateCRC16(crcdataArray, 6)
+              console.log(crc)
+              dataView.setUint8(6, Math.floor(crc / 256))
+              dataView.setUint8(7, crc%256)
+              data = await getApp().Command_Send(1, arrayBuffer1, that.data.title)
+              if(data.result) {
+                console.log(data.detail.value)
+                if(data.detail.value.byteLength >= 53) {
+                  var dataArray = new Uint8Array(data.detail.value)
+                  if(dataArray[0] == 0x01 && 
+                    dataArray[1] == 0x03 && 
+                    dataArray[2] == 0x30) {
+                      crc = getApp().calculateCRC16(dataArray, 51)
+                      if(dataArray[51] == Math.floor(crc / 256) && 
+                      dataArray[52] == crc%256) {
+                        //数值解析
+                        const buffer = new ArrayBuffer(4)
+                        const uint8Array = new Uint8Array(buffer)
+                        uint8Array.set(dataArray.slice(3, 7), 0)
+                        value1 = getApp().bytesToLong(buffer) / 1000.0;
 
-                      uint8Array.set(dataArray.slice(19, 23), 0)
-                      value3 = getApp().bytesToLong(buffer);
+                        uint8Array.set(dataArray.slice(7, 11), 0)
+                        value2 = getApp().bytesToLong(buffer) / 10000.0;
 
-                      //转换为16位有符号整数
-                      var temp = dataArray[23] * 256 + dataArray[24] //js默认变量为Int32
-                      temp &= 0xFFFF
-                      if(temp > 32767) {
-                        temp -= 0x10000
+                        uint8Array.set(dataArray.slice(19, 23), 0)
+                        value3 = getApp().bytesToLong(buffer);
+
+                        //转换为16位有符号整数
+                        var temp = dataArray[23] * 256 + dataArray[24] //js默认变量为Int32
+                        temp &= 0xFFFF
+                        if(temp > 32767) {
+                          temp -= 0x10000
+                        }
+                        value3 += (temp / 10000.0)
+
+                        temp = dataArray[25] * 256 + dataArray[26]
+                        temp &= 0xFFFF
+                        if(temp > 32767) {
+                          temp -= 0x10000
+                        }
+                        value3 += (temp * 1e8)
+
+                        uint8Array.set(dataArray.slice(27, 31), 0)
+                        value4 = getApp().bytesToLong(buffer);
+                        
+                        temp = dataArray[31] * 256 + dataArray[32] 
+                        temp &= 0xFFFF
+                        if(temp > 32767) {
+                          temp -= 0x10000
+                        }
+                        value4 += (temp / 10000.0)
+
+                        temp = dataArray[33] * 256 + dataArray[34]
+                        temp &= 0xFFFF
+                        if(temp > 32767) {
+                          temp -= 0x10000
+                        }
+                        value4 += (temp * 1e8)
+                        //是个负值
+
+                        uint8Array.set(dataArray.slice(35, 39), 0)
+                        value5 = getApp().bytesToLong(buffer) / 100.0;
+
+                        uint8Array.set(dataArray.slice(39, 43), 0)
+                        value6 = getApp().bytesToLong(buffer) / 10.0;
+
+                        uint8Array.set(dataArray.slice(43, 47), 0)
+                        value7 = getApp().bytesToLong(buffer);
+
+                        uint8Array.set(dataArray.slice(47, 51), 0)
+                        //console.log(buffer)
+                        value8 = getApp().bytesToLong(buffer);
+                        //console.log(value8)
+
+                        that.setData({
+                          input_value1: value1,
+                          input_value2: value2,
+                          input_value3: value3,
+                          input_value4: value4,
+                          input_value5: value5,
+                          input_value6: value6,
+                          input_value7: value7,
+                          input_value8: value8,
+                        })
+
+                        Communication_successful++
+                        tips_text = that.data.title + "成功!\n"
                       }
-                      value3 += (temp / 10000.0)
-
-                      temp = dataArray[25] * 256 + dataArray[26]
-                      temp &= 0xFFFF
-                      if(temp > 32767) {
-                        temp -= 0x10000
+                      else {
+                        tips_text = that.data.title + "设备响应校验不符。"
                       }
-                      value3 += (temp * 1e8)
-
-                      uint8Array.set(dataArray.slice(27, 31), 0)
-                      value4 = getApp().bytesToLong(buffer);
-                      
-                      temp = dataArray[31] * 256 + dataArray[32] 
-                      temp &= 0xFFFF
-                      if(temp > 32767) {
-                        temp -= 0x10000
-                      }
-                      value4 += (temp / 10000.0)
-
-                      temp = dataArray[33] * 256 + dataArray[34]
-                      temp &= 0xFFFF
-                      if(temp > 32767) {
-                        temp -= 0x10000
-                      }
-                      value4 += (temp * 1e8)
-                      //是个负值
-
-                      uint8Array.set(dataArray.slice(35, 39), 0)
-                      value5 = getApp().bytesToLong(buffer) / 100.0;
-
-                      uint8Array.set(dataArray.slice(39, 43), 0)
-                      value6 = getApp().bytesToLong(buffer) / 10.0;
-
-                      uint8Array.set(dataArray.slice(43, 47), 0)
-                      value7 = getApp().bytesToLong(buffer);
-
-                      uint8Array.set(dataArray.slice(47, 51), 0)
-                      //console.log(buffer)
-                      value8 = getApp().bytesToLong(buffer);
-                      //console.log(value8)
-
-                      that.setData({
-                        input_value1: value1,
-                        input_value2: value2,
-                        input_value3: value3,
-                        input_value4: value4,
-                        input_value5: value5,
-                        input_value6: value6,
-                        input_value7: value7,
-                        input_value8: value8,
-                      })
-
-                      Communication_successful++
-                      tips_text = that.data.title + "成功!\n"
                     }
                     else {
-                      tips_text = that.data.title + "设备响应校验不符。"
+                      tips_text = that.data.title + "设备响应内容不符。"
                     }
-                  }
-                  else {
-                    tips_text = that.data.title + "设备响应内容不符。"
-                  }
+                }
+                else {
+                  tips_text = that.data.title + "设备响应长度不符。"
+                }
               }
-              else {
-                tips_text = that.data.title + "设备响应长度不符。"
-              }
-            }
 
 
-            if(!(tips_text === "")) {
+              if(!(tips_text === "")) {
+                that.setData({
+                  tips: tips_text,
+                })
+              }
               that.setData({
-                tips: tips_text,
+                countings: Communication_successful + "/" + Communication_count,
               })
+              Cycle_complete = true
             }
-            that.setData({
-              countings: Communication_successful + "/" + Communication_count,
-            })
           }, 2100)
         }
       } catch(e) {
@@ -273,6 +281,7 @@ Page({
         buttonText: "读取",
       });
       clearInterval(Interval_number)
+      Cycle_complete = true
     }
   }
 })

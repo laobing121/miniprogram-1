@@ -8,8 +8,8 @@ Page({
    */
   data: {
     items: [
-        { name: 'wuf-c', value: 'KCL-C' },
-        { name: 'wuw-a', value: 'KCS-A'},
+        { name: 'wuf-c', value: 'KCL-F' },
+        { name: 'wuw-a', value: 'KCS-A / KCL-C'},
         { name: 'wuw-c', value: 'KCS-C' , checked: 'true' },
         { name: 'debug', value: 'Other equipment'},
     ]

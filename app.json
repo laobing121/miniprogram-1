@@ -36,7 +36,9 @@
     "pages/Parameter_Items/Output_interface/Output_interface",
     "pages/Parameter_Items/Other_options/Other_options",
     "pages/Parameter_Items/Channel_parameters/Channel_parameters",
-    "pages/Parameter_Items/Multi-stage_tuning/Multi-stage_tuning"
+    "pages/Parameter_Items/Multi-stage_tuning/Multi-stage_tuning",
+    "pages/Features/Verify/Verify",
+    "pages/Features/History/History"
   ],
   "darkmode": true,
   "window": {

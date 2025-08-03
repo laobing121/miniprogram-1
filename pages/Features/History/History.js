@@ -1,18 +1,11 @@
-// pages/wuw-a/wuw-a.js
+// pages/Features/History/History.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    items: [
-      { name: 'Parameter', value: '001 仪表参数设置' },
-      { name: 'Data', value: '002 读取计量数据' },
-      { name: 'Verify', value: '003 读取检定数据' },
-      { name: 'History', value: '004 读取历史数据'},
-      { name: 'Real-time', value: '005 实时时钟校准'},
-      { name: 'Data-correction', value: '006 数据更正'},
-    ]
+
   },
 
   /**
@@ -69,12 +62,5 @@ Page({
    */
   onShareAppMessage() {
 
-  },
-
-  btn1(event) {
-    wx.vibrateShort();
-      wx.navigateTo({
-        url: '/pages/Features/' + event.currentTarget.id + '/' + event.currentTarget.id,
-      })
   }
 })
