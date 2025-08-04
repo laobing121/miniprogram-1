@@ -1,18 +1,30 @@
 // pages/Features/Real-time/Real-time.js
+var button_command
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    title: "实时时钟校准",
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    //获取当前页面
+    getApp().TogetCurrentPage()
+    //console.log(getApp().globalData.currentPage)
+    getApp().globalData.Reconnect_count = 0;
 
+    button_command = 0
+    this.setData({
+      button_disabled: false,
+      tips: "",
+      buttonText: "下达",
+      });
   },
 
   /**
@@ -62,5 +74,9 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+
+  btn1: async function() {
+    
   }
 })
