@@ -1,1 +1,4 @@
 /* pages/Features/Real-time/Real-time.wxss */
+.btnGroup{
+  margin-top: 30rpx;
+}

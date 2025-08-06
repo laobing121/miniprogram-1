@@ -8,9 +8,10 @@ Page({
     items: [
       { name: 'Parameter', value: '001 仪表参数设置' },
       { name: 'Data', value: '002 读取计量数据' },
-      { name: 'Verify', value: '003 读取检定数据' },
-      { name: 'Real-time', value: '004 实时时钟校准'},
-      { name: 'Data-correction', value: '005 数据更正'},
+      { name: 'Debugging', value: '003 读取调试数据' },
+      { name: 'Verify', value: '004 读取检定数据' },
+      { name: 'Real-time', value: '005 实时时钟校准'},
+      { name: 'Data-correction', value: '006 数据更正'},
     ]
   },
 

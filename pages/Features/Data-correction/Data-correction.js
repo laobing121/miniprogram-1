@@ -96,6 +96,7 @@ Page({
     try {
       //检查value1
       if(!isNaN(parseFloat(value1)) && isFinite(value1)) {
+        value1 = Math.round(value1)
         if((value1 < 1e8) && (value1 > -1e8)) {
           var arrayBuffer1 = new ArrayBuffer(50)
           var dataView = new DataView(arrayBuffer1)

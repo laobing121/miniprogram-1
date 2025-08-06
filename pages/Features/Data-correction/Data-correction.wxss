@@ -1,1 +1,4 @@
 /* pages/Features/Data-correction/Data-correction.wxss */
+.btnGroup{
+  margin-top: 30rpx;
+}

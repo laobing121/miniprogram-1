@@ -38,7 +38,8 @@
     "pages/Parameter_Items/Channel_parameters/Channel_parameters",
     "pages/Parameter_Items/Multi-stage_tuning/Multi-stage_tuning",
     "pages/Features/Verify/Verify",
-    "pages/Features/History/History"
+    "pages/Features/History/History",
+    "pages/Features/Debugging/Debugging"
   ],
   "darkmode": true,
   "window": {

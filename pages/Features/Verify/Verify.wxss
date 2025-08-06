@@ -1,1 +1,4 @@
 /* pages/Features/Verify/Verify.wxss */
+.btnGroup{
+  margin-top: 30rpx;
+}
